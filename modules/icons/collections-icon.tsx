@@ -1,0 +1,34 @@
+import type { SvgProps } from "./types";
+
+export const CollectionsIcon = ({ ...props }: SvgProps) => (
+  <svg
+    {...props}
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M6.75 3.75H17.25"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M4.75 7.25H19.25"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M19.156 10.75H4.84482C3.53347 10.75 2.57694 11.9908 2.91067 13.259L4.35804 18.759C4.58926 19.6376 5.38365 20.25 6.29219 20.25H17.7086C18.6172 20.25 19.4116 19.6376 19.6428 18.759L21.0901 13.259C21.4239 11.9908 20.4673 10.75 19.156 10.75Z"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);

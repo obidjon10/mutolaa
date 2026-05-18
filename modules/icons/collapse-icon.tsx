@@ -1,0 +1,19 @@
+import type { SvgProps } from "./types";
+
+export const CollapseIcon = ({ size = 16, ...props }: SvgProps) => (
+    <svg
+      {...props}
+      fill="none"
+      width={size}
+      height={size}
+      viewBox="0 0 16 16"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M6 3.5H12C12.8284 3.5 13.5 4.17157 13.5 5V11C13.5 11.8284 12.8284 12.5 12 12.5H6L6 3.5ZM4.5 3.5H4C3.17157 3.5 2.5 4.17157 2.5 5V11C2.5 11.8284 3.17157 12.5 4 12.5H4.5L4.5 3.5ZM1 5C1 3.34315 2.34315 2 4 2H12C13.6569 2 15 3.34315 15 5V11C15 12.6569 13.6569 14 12 14H4C2.34315 14 1 12.6569 1 11V5Z"
+        fill="currentColor"
+      />
+    </svg>
+  );

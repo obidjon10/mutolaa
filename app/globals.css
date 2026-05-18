@@ -1,0 +1,158 @@
+@import "@heroui/styles";
+
+
+@custom-variant dark {
+  &:where(.dark, .dark *) {
+    @slot;
+  }
+}
+
+@theme {
+  --color-muted: #F5F5F4;
+  --color-muted-dark: #18181B;
+  --color-foreground-muted: #78716C;
+  --color-brand: #FF6900;
+}
+
+/* Override heroui's tertiary button so it uses the muted surface tokens. */
+.button--tertiary {
+  --button-bg: var(--color-muted);
+  --button-bg-hover: var(--color-muted);
+  --button-bg-pressed: var(--color-muted);
+}
+
+.dark .button--tertiary {
+  --button-bg: var(--color-muted-dark);
+  --button-bg-hover: var(--color-muted-dark);
+  --button-bg-pressed: var(--color-muted-dark);
+}
+
+/* --color-muted is now the surface bg, but heroui internals (drawer
+ * description, empty-state subtext, breadcrumb links/separators, inactive
+ * tab labels) apply `text-muted` expecting the old foreground gray.
+ * Re-point those specific elements at --color-foreground-muted. */
+.drawer__description,
+.empty-state,
+.breadcrumbs__link,
+.breadcrumbs__separator,
+.tabs__tab {
+  color: var(--color-foreground-muted);
+}
+
+html {
+  overscroll-behavior-y: none;
+}
+
+:root,
+.light,
+.default,
+[data-theme="light"],
+[data-theme="default"] {
+  --font-sans: var(--font-inter);
+
+  /* Theme Colors (Light Mode) */
+  --accent: oklch(69.96% 0.2019 44.45);
+  --accent-foreground: oklch(99.11% 0 0);
+  --background: oklch(97.02% 0.0015 44.45);
+  --border: oklch(90.00% 0.0015 44.45);
+  --danger: oklch(65.32% 0.2335 0.61);
+  --danger-foreground: oklch(99.11% 0 0);
+  --default: oklch(94.00% 0.0015 44.45);
+  --default-foreground: oklch(21.03% 0.0059 44.45);
+  --field-background: oklch(100.00% 0.0008 44.45);
+  --field-foreground: oklch(21.03% 0.0015 44.45);
+  --field-placeholder: oklch(55.17% 0.0030 44.45);
+  --focus: oklch(69.96% 0.2019 44.45);
+  --foreground: oklch(21.03% 0.0015 44.45);
+  --muted: oklch(55.17% 0.0030 44.45);
+  --overlay: oklch(100.00% 0.0004 44.45);
+  --overlay-foreground: oklch(21.03% 0.0015 44.45);
+  --scrollbar: oklch(87.10% 0.0015 44.45);
+  --segment: oklch(100.00% 0.0015 44.45);
+  --segment-foreground: oklch(21.03% 0.0015 44.45);
+  --separator: oklch(92.00% 0.0015 44.45);
+  --success: oklch(73.29% 0.1941 125.68);
+  --success-foreground: oklch(21.03% 0.0059 125.68);
+  --surface: oklch(100.00% 0.0008 44.45);
+  --surface-foreground: oklch(21.03% 0.0015 44.45);
+  --surface-secondary: oklch(95.24% 0.0012 44.45);
+  --surface-secondary-foreground: oklch(21.03% 0.0015 44.45);
+  --surface-tertiary: oklch(93.73% 0.0012 44.45);
+  --surface-tertiary-foreground: oklch(21.03% 0.0015 44.45);
+  --warning: oklch(78.19% 0.1590 47.20);
+  --warning-foreground: oklch(21.03% 0.0059 47.20);
+}
+
+.dark,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --accent: oklch(69.96% 0.2019 44.45);
+  --accent-foreground: oklch(99.11% 0 0);
+  --background: oklch(12.00% 0.0015 44.45);
+  --border: oklch(28.00% 0.0015 44.45);
+  --danger: oklch(59.40% 0.1973 359.50);
+  --danger-foreground: oklch(99.11% 0 0);
+  --default: oklch(27.40% 0.0015 44.45);
+  --default-foreground: oklch(99.11% 0 0);
+  --field-background: oklch(21.03% 0.0030 44.45);
+  --field-foreground: oklch(99.11% 0.0015 44.45);
+  --field-placeholder: oklch(70.50% 0.0030 44.45);
+  --focus: oklch(69.96% 0.2019 44.45);
+  --foreground: oklch(99.11% 0.0015 44.45);
+  --muted: oklch(70.50% 0.0030 44.45);
+  --overlay: oklch(21.03% 0.0030 44.45);
+  --overlay-foreground: oklch(99.11% 0.0015 44.45);
+  --scrollbar: oklch(70.50% 0.0015 44.45);
+  --segment: oklch(39.64% 0.0015 44.45);
+  --segment-foreground: oklch(99.11% 0.0015 44.45);
+  --separator: oklch(25.00% 0.0015 44.45);
+  --success: oklch(73.29% 0.1941 125.68);
+  --success-foreground: oklch(21.03% 0.0059 125.68);
+  --surface: oklch(21.03% 0.0030 44.45);
+  --surface-foreground: oklch(99.11% 0.0015 44.45);
+  --surface-secondary: oklch(25.70% 0.0023 44.45);
+  --surface-secondary-foreground: oklch(99.11% 0.0015 44.45);
+  --surface-tertiary: oklch(27.21% 0.0023 44.45);
+  --surface-tertiary-foreground: oklch(99.11% 0.0015 44.45);
+  --warning: oklch(82.03% 0.1392 51.21);
+  --warning-foreground: oklch(21.03% 0.0059 51.21);
+}
+
+html {
+  font-family: var(--font-sans);
+}
+
+/* Hide scrollbar for horizontal scroll areas */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+@layer utilities {
+  .blob {
+    clip-path: shape(
+      from 94.05% 40.64%,
+      curve to 89.45% 57.46% with 92.91% 50%,
+      curve to 81.41% 70.87% with 86% 64.91%,
+      curve to 70.02% 79.37% with 76.83% 76.83%,
+      curve to 56.61% 84.57% with 63.22% 81.91%,
+      curve to 41.89% 88.20% with 50% 87.23%,
+      curve to 28.23% 83.24% with 33.77% 89.18%,
+      curve to 19.87% 70.48% with 22.69% 77.31%,
+      curve to 11.15% 56.83% with 17.04% 63.65%,
+      curve to 6.37% 41.19% with 5.26% 50%,
+      curve to 15.73% 28.18% with 7.48% 32.39%,
+      curve to 30.14% 20.46% with 23.98% 23.98%,
+      curve to 43.15% 11.02% with 36.31% 16.95%,
+      curve to 58.97% 5.89% with 50% 5.09%,
+      curve to 72.71% 14.61% with 67.94% 6.69%,
+      curve to 86.34% 26.90% with 77.48% 22.52%,
+      curve to 94.05% 40.64% with 95.20% 31.28%
+    );
+  }
+}
