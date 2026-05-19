@@ -1,21 +1,31 @@
+import type { TransactionContentType } from "./constants";
+
 export interface ITransactionHistory {
-  id: number
-  content_type: string
-  paid_at: string
-  order: IOrder
+  id: number;
+  content_type: TransactionContentType;
+  paid_at: string;
+  order: IOrder;
 }
 
 export interface IOrder {
-  amount: string
-  wallet_amount: string
-  provider_amount: string
-  provider: string
-  tariff_name: string
-  card?: ICard
+  amount: string;
+  provider: string;
+  book?: IOrderBook;
+  wallet_amount?: string;
+  provider_amount?: string;
+  tariff_name?: string;
+  card?: ICard;
+}
+
+export interface IOrderBook {
+  id: number;
+  title: string;
+  is_ebook_purchased: boolean;
+  is_audiobook_purchased: boolean;
 }
 
 export interface ICard {
-  id: number
-  card_number: string
-  card_type: string
+  id: number;
+  card_number: string;
+  card_type: string;
 }

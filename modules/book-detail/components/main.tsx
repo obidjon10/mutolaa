@@ -72,11 +72,12 @@ export const Main = () => {
           <ConditionalRender
             if={
               isAuthenticated &&
-              !bookDetail?.user_book_rights?.has_audiobook_access &&
-              !bookDetail?.user_book_rights?.has_ebook_access
+              (!bookDetail?.user_book_rights?.has_audiobook_access ||
+                !bookDetail?.user_book_rights?.has_ebook_access)
             }
           >
             <BookPrices
+              slug={slug}
               allPrice={bookDetail?.price}
               ebookPrice={bookDetail?.ebook?.price}
               audioPrice={bookDetail?.audiobook?.price}

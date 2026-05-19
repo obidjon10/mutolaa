@@ -1,6 +1,7 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 import { authSlice } from "@/modules/auth";
+import { bookPaymentSlice } from "@/modules/book-payment";
 import { commonSlice } from "@/modules/common/store";
 import { paymentSlice } from "@/modules/payment";
 
@@ -15,6 +16,7 @@ export const store = configureStore({
     app: appSlice.reducer,
     auth: authSlice.reducer,
     payment: paymentSlice.reducer,
+    bookPayment: bookPaymentSlice.reducer,
     common: commonSlice.reducer,
   },
 });

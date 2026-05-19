@@ -9,10 +9,13 @@ import { ITransactionStatusResponse } from "../models";
 const POLL_INTERVAL_MS = 3_000;
 const POLL_TIMEOUT_MS = 5 * 60 * 1_000;
 
+export type TransactionOrderType = "premiumorder" | "bookorder";
+
 export const useTransactionStatus = (
   orderId: number | null,
   onSuccess: () => void,
   onTimeout: () => void,
+  orderType: TransactionOrderType = "premiumorder",
 ) => {
   const onSuccessRef = useRef(onSuccess);
   const onTimeoutRef = useRef(onTimeout);
@@ -35,7 +38,7 @@ export const useTransactionStatus = (
       try {
         const { data } = await $api.get<ITransactionStatusResponse>(
           `/payment/GetLastTransactionStatus/${orderId}/`,
-          { params: { order_type: "premiumorder" } },
+          { params: { order_type: orderType } },
         );
 
         if (!cancelled && data?.status === "paid") {
@@ -62,5 +65,5 @@ export const useTransactionStatus = (
       cancelled = true;
       clearTimeout(timerId);
     };
-  }, [orderId]);
+  }, [orderId, orderType]);
 };

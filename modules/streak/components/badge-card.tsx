@@ -20,7 +20,6 @@ export function BadgeCard({ badge }: IProps) {
   const percent = Math.max(0, Math.min(100, badge.percent ?? 0));
   const isComplete = badge.is_obtained || percent >= 100;
   const isInProgress = !isComplete && percent > 0;
-  const isActive = isComplete || isInProgress;
 
   // eslint-disable-next-line no-nested-ternary
   const imageSrc = isComplete

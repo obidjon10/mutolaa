@@ -2,6 +2,7 @@ export * from "./apple-icon";
 export * from "./arrow-right-icon";
 export * from "./bell-icon";
 export * from "./bilig-coin-icon";
+export * from "./bilig-coin-inactive-icon";
 export * from "./book-open-icon";
 export * from "./brain-icon";
 export * from "./bulb-icon";

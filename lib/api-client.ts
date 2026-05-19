@@ -34,7 +34,9 @@ $api.interceptors.request.use(
 $api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 && typeof window !== "undefined") {
+    // TODO: drop 403 once backend stops returning it for unauthorized requests.
+    const status = error.response?.status;
+    if ((status === 401 || status === 403) && typeof window !== "undefined") {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
       document.cookie = "access_token=; path=/; max-age=0; SameSite=Lax";

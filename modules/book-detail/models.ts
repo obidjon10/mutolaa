@@ -24,6 +24,7 @@ export interface IBookDetail {
   audiobook: IAudiobook;
   price: IPriceTotal;
   has_saved: boolean;
+  is_coin_sale_available: boolean;
   user_book_rights: IUserBookRights;
 }
 

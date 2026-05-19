@@ -307,7 +307,8 @@ export function FreezeModal({
 
   // Derive the effective selection: explicit user pick → clicked package → first package
   const effectiveSelected = selected ?? initialPackage ?? packages[0] ?? null;
-  const hasEnoughCoins = (effectiveSelected?.coin_cost ?? 0) <= (userCoins || 0);
+  const hasEnoughCoins =
+    (effectiveSelected?.coin_cost ?? 0) <= (userCoins || 0);
 
   const handlePurchase = () => {
     if (!effectiveSelected) return;
@@ -332,14 +333,20 @@ export function FreezeModal({
       <Modal.Backdrop>
         <Modal.Container>
           <Modal.Dialog
-            className={classNames("sm:max-w-110 p-4", {
-              "bg-linear-to-b from-5% to-95% via-white from-[#C2ECFD] to-white dark:to-black dark:via-black":
-                step === "purchase",
-            })}
+            className={classNames(
+              "sm:max-w-110 p-4",
+              step === "purchase" && [
+                "bg-linear-to-b from-5% to-95% via-white from-[#C2ECFD] to-white",
+                "dark:bg-[linear-gradient(180.06deg,#50CDFF_0.05%,#18181B_78.8%)]",
+                "shadow-[0_14px_28px_#00000014,0_-6px_12px_#00000008,0_2px_8px_#0000000F,inset_0_0_1px_#00000000]",
+                "dark:shadow-[0_14px_28px_#00000014,0_-6px_12px_#00000008,0_2px_8px_#0000000F,inset_0_0_1px_#FFFFFF1F]",
+                "backdrop-blur-2xl",
+              ],
+            )}
           >
             {isOpen && (
               <div className="relative text-center">
-                <Modal.CloseTrigger className="absolute top-0 right-0 flex size-7 items-center justify-center rounded-full bg-white dark:bg-black text-foreground-muted hover:bg-gray-200 dark:hover:bg-[#3F3F46]">
+                <Modal.CloseTrigger className="absolute top-0 right-0 flex size-7 items-center justify-center rounded-full bg-white dark:bg-[#FFFFFF99] text-foreground-muted hover:bg-gray-200 dark:hover:bg-[#ffffff79]">
                   <XMarkIcon size={16} />
                 </Modal.CloseTrigger>
 
@@ -362,7 +369,7 @@ export function FreezeModal({
 
                     <p
                       className={classNames(
-                        "text-sm text-foreground-muted mx-auto mt-2",
+                        "text-sm text-foreground-muted dark:text-white mx-auto mt-2",
                         {
                           "w-60": !hasEnoughCoins,
                           "w-70": hasEnoughCoins,
@@ -374,21 +381,21 @@ export function FreezeModal({
                         : t("muz_sotib_olish_uchun_tolayin")}
                     </p>
 
-                    <Separator className="my-4 w-70 mx-auto" />
+                    <Separator className="my-4 w-70 mx-auto dark:bg-[#D9D9D933]" />
 
-                    <div className="inline-flex items-center gap-1 p-3 border border-[#00000014] rounded-full text-xs font-medium">
+                    <div className="inline-flex items-center gap-1 p-3 border border-[#00000014] dark:bg-white rounded-full text-xs font-medium">
                       <span className="text-[#696969]">
-                        {t("mavjud_biliglaringiz")}
+                        {t("mavjud_biliglaringiz")} —
                       </span>{" "}
-                      — <BiligCoinIcon size={12} />
-                      {userCoins || 0}
+                      <BiligCoinIcon size={12} />
+                      <span className="text-[#030303]">{userCoins || 0}</span>
                     </div>
 
                     <div className="flex gap-3 mt-11">
                       <ConditionalRender if={hasEnoughCoins}>
                         <Button
                           variant="tertiary"
-                          className="flex-1"
+                          className="flex-1 dark:bg-[#374151]"
                           onPress={onClose}
                         >
                           {t("hozir_emas")}
