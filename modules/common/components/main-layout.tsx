@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import classNames from "classnames";
 
-import { ChevronRightIcon } from "@/modules/icons";
 import { MiniPlayer, useAudioTrack } from "@/modules/player";
 
 import { AuthRequiredModal } from "./auth-required-modal";
@@ -30,22 +28,6 @@ export function MainLayout({ children, initialIsAuthenticated }: IProps) {
         onToggleCollapse={() => setCollapsed((prev) => !prev)}
         initialIsAuthenticated={initialIsAuthenticated}
       />
-
-      {/* Collapse toggle — positioned relative to viewport */}
-      <div
-        style={{
-          left: collapsed ? SIDEBAR_COLLAPSED - 16 : SIDEBAR_EXPANDED - 16,
-        }}
-        className="fixed top-8 z-50 hidden lg:flex h-8 w-4 cursor-pointer items-center justify-center rounded-l-md bg-[#D4D4D8] hover:bg-[#C4C4C8] dark:bg-[#3f3f46] dark:hover:bg-[#52525b] transition-[left] duration-180 ease-out"
-        onClick={() => setCollapsed((prev) => !prev)}
-      >
-        <ChevronRightIcon
-          className={classNames("transition-transform duration-200", {
-            "rotate-180": !collapsed,
-            "rotate-0": collapsed,
-          })}
-        />
-      </div>
 
       {/* Content column */}
       <div className="flex flex-1 flex-col min-w-0">
@@ -75,7 +57,10 @@ export function MainLayout({ children, initialIsAuthenticated }: IProps) {
           </span>
         </header>
 
-        <main className={hasMiniPlayer ? "mb-25" : undefined}>
+        <main
+          style={{ contain: "layout" }}
+          className={hasMiniPlayer ? "mb-25" : undefined}
+        >
           {children}
         </main>
       </div>

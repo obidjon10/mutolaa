@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import { Spinner } from "@heroui/react";
-import type { Contents, Rendition } from "epubjs";
+import type { Rendition } from "epubjs";
 
 import { readerBaseStyles, THEME_PALETTE } from "../constants";
 import {
@@ -39,7 +39,9 @@ interface IReaderViewProps {
   onFontSizeChange: (n: number) => void;
   onThemeChange: (t: ReaderThemeType) => void;
   highlights?: IHighlight[];
-  onCreateHighlight?: (highlight: Omit<IHighlight, "id" | "created_at">) => void;
+  onCreateHighlight?: (
+    highlight: Omit<IHighlight, "id" | "created_at">,
+  ) => void;
 }
 
 export function ReaderView({
@@ -51,13 +53,10 @@ export function ReaderView({
   onFontSizeChange,
   onThemeChange,
   highlights,
-  onCreateHighlight,
 }: IReaderViewProps) {
   const t = useTranslations();
 
-  const [location, setLocation] = useState<string | number | null>(
-    book.last_location ?? 0,
-  );
+  const [location, setLocation] = useState<string | number | null>(0);
   const [rendition, setRendition] = useState<Rendition | null>(null);
   const [activeHighlightColor, setActiveHighlightColor] =
     useState<HighlightColorType | null>(null);
@@ -86,37 +85,6 @@ export function ReaderView({
     handleSearchResults,
     goToSearchResult,
   } = useReaderSearch(rendition, setLocation);
-
-  const createHighlight = useCallback(
-    (cfiRange: string, text: string, color: HighlightColorType) => {
-      onCreateHighlight?.({
-        book_slug: book.slug,
-        cfi_range: cfiRange,
-        color,
-        text,
-      });
-    },
-    [book.slug, onCreateHighlight],
-  );
-
-  // Highlighting is only active while the popover is open: the user clicks
-  // the marker icon, picks a color, drag-selects text → highlight applied.
-  // Page-flip swipes are disabled in this mode so the drag-select isn't
-  // captured as a navigation gesture (see `swipeable` on ReactReader below).
-  const handleTextSelected = useCallback(
-    (cfiRange: string, contents: Contents) => {
-      const color = activeColorRef.current;
-      if (!color) return;
-
-      const selection = contents.window.getSelection();
-      const text = selection?.toString().trim() ?? "";
-      if (!text) return;
-
-      createHighlight(cfiRange, text, color);
-      selection?.removeAllRanges();
-    },
-    [createHighlight],
-  );
 
   // Closing the popover (marker icon, outside click, Escape) exits highlight
   // mode — clears the active color so the next selection won't highlight.
@@ -200,7 +168,6 @@ export function ReaderView({
           location={location}
           locationChanged={handleLocationChanged}
           getRendition={setRendition}
-          handleTextSelected={handleTextSelected}
           epubOptions={epubOptions}
           showToc={false}
           readerStyles={readerStyles}
@@ -211,7 +178,9 @@ export function ReaderView({
           loadingView={
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
               <Spinner />
-              <span className="text-sm text-foreground-muted">{t("yuklanmoqda")}</span>
+              <span className="text-sm text-foreground-muted">
+                {t("yuklanmoqda")}
+              </span>
             </div>
           }
         />

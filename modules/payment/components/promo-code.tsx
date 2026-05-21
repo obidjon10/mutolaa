@@ -52,6 +52,7 @@ export function PromoCode({ onSuccess }: IPromoCodeProps) {
             onClick={onCheck}
             variant="tertiary"
             isPending={isPending}
+            isDisabled={!promoCode.trim()}
             className="text-brand bg-muted dark:bg-muted-dark"
           >
             {t("qollash")}

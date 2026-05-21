@@ -19,9 +19,9 @@ export const Streak: React.FC<IProps> = ({ streak }) => {
 
         <Link
           href="/streak"
-          className="text-sm cursor-pointer flex font-medium underline items-center gap-0.5"
+          className="text-sm cursor-pointer flex font-medium underline underline-offset-4 decoration-[#CDCDCE] items-center gap-0.5"
         >
-          {t("toliq_korsatish")}
+          {t("toliq_korish")}
           <ArrowRightIcon />
         </Link>
       </div>

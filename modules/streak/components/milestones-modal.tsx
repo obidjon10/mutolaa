@@ -21,10 +21,12 @@ export const MilestonesModal: React.FC<IProps> = ({ badges }) => {
     <Modal>
       <Button
         variant="ghost"
-        className="text-sm hover:bg-transparent cursor-pointer flex font-medium underline items-center gap-0.5"
+        className="text-sm hover:bg-transparent cursor-pointer"
       >
-        {t("toliq_korish")}
-        <ArrowRightIcon />
+        <div className="flex font-medium underline underline-offset-4 decoration-[#CDCDCE] items-center gap-0.5">
+          {t("toliq_korish")}
+          <ArrowRightIcon />
+        </div>
       </Button>
       <Modal.Backdrop>
         <Modal.Container>

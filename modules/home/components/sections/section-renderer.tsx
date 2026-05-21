@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import { ContentTypeEnum, HomeSectionType } from "../../models";
 
 // import { HeroSection } from "../hero-section";
@@ -10,7 +12,12 @@ interface ISectionRendererProps {
   section: HomeSectionType;
 }
 
-export const SectionRenderer = ({ section }: ISectionRendererProps) => {
+// Memoized so that DiscoverSections re-renders (driven by virtualizer
+// measureElement firing on every sidebar-collapse frame) don't cascade
+// into re-rendering every visible section's book lists.
+export const SectionRenderer = memo(function SectionRenderer({
+  section,
+}: ISectionRendererProps) {
   switch (section.content_type) {
     case ContentTypeEnum.BookBucket:
       return <BookShelfSection section={section} />;
@@ -23,4 +30,4 @@ export const SectionRenderer = ({ section }: ISectionRendererProps) => {
     default:
       return null;
   }
-};
+});

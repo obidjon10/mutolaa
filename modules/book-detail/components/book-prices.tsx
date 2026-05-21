@@ -135,11 +135,26 @@ export const BookPrices = ({
               <Image src="/all.webp" alt="ALL (AUDIO + EBOOK)" fill sizes="48px" />
             </div>
             <div className="text-sm font-medium">
-              <p>{t("tejamkor_harid")}</p>
+              <p>
+                {t(
+                  allPrice?.total_sale_price
+                    ? "tejamkor_harid"
+                    : "elektron_va_audio",
+                )}
+              </p>
               <div className="flex items-center gap-1.5">
-                <p className="text-[#65A30D]">
-                  {Math.floor(allPrice?.total_sale_price)?.toLocaleString("ru")} UZS
+                <p className={allPrice?.total_sale_price ? "text-[#65A30D]" : undefined}>
+                  {Math.floor(
+                    allPrice?.total_sale_price ?? allPrice?.total_price,
+                  )?.toLocaleString("ru")}{" "}
+                  UZS
                 </p>
+                <ConditionalRender if={!!allPrice?.total_sale_price}>
+                  <p className="line-through text-xs text-foreground-muted">
+                    {Math.floor(allPrice?.total_price)?.toLocaleString("ru")}{" "}
+                    UZS
+                  </p>
+                </ConditionalRender>
               </div>
             </div>
           </div>

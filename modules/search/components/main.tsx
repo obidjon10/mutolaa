@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { useDebouncedValue } from "@/modules/common";
 
@@ -35,6 +35,15 @@ export const Main = () => {
 
   const debouncedSearch = useDebouncedValue(search.trim(), SEARCH_DEBOUNCE_MS);
   const searchInputRef = useRef<HTMLDivElement>(null);
+
+  const isInitialMountRef = useRef(true);
+  useEffect(() => {
+    if (isInitialMountRef.current) {
+      isInitialMountRef.current = false;
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [topicIds, authorIds, dubberIds, categoryIds, publisherIds, ageRange]);
 
   const filterGroups = useFilterTags({
     ageRange,

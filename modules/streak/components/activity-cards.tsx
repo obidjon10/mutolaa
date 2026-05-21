@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import classNames from "classnames";
 
 import { ConditionalRender } from "@/modules/common";
+import { formatDateForDisplay } from "@/modules/common/constants/date-formats";
 
 interface IProps {
   currentStreakDay?: number;
@@ -36,23 +37,35 @@ export const ActivityCards: React.FC<IProps> = ({
         </div>
       </div>
       <ConditionalRender if={isDetail}>
-        <div className="border border-[#E4E4E7] dark:border-[#27272A] h-19.5 rounded-xl p-2 w-full flex flex-col justify-between">
+        <div
+          className={classNames(
+            "border border-[#E4E4E7] dark:border-[#27272A] h-19.5 rounded-xl p-2 w-full",
+            {
+              "flex flex-col justify-between": startDate,
+              "flex items-center justify-center": !startDate,
+            },
+          )}
+        >
           <ConditionalRender if={startDate}>
             <p className="text-foreground-muted text-sm">{t("boshlangan")}</p>
           </ConditionalRender>
           <div className="flex items-end gap-1">
             <div
-              className={classNames({
-                "text-xl font-semibold": startDate,
-                "text-base font-medium text-center": !startDate,
+              className={classNames("text-center", {
+                "font-semibold text-xl": startDate,
+                "font-medium": !startDate,
               })}
             >
-              {startDate ?? t("faollik_hali_boshlanmagan")}
+              {startDate
+                ? formatDateForDisplay(startDate)
+                : t("faollik_hali_boshlanmagan")}
             </div>
           </div>
         </div>
         <div className="border border-[#E4E4E7] dark:border-[#27272A] h-19.5 rounded-xl p-2 w-full flex flex-col justify-between">
-          <p className="text-foreground-muted text-sm">{t("yegilgan_biliglar")}</p>
+          <p className="text-foreground-muted text-sm">
+            {t("yegilgan_biliglar")}
+          </p>
           <div className="flex items-end gap-2">
             <div className="text-xl font-semibold">{coinsCount}</div>
             <p className="text-sm mb-0.5">{t("ta")}</p>

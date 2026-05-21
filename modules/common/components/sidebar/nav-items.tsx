@@ -12,6 +12,7 @@ import {
   ShoppingCartIcon,
 } from "@/modules/icons";
 
+import { SidebarTooltip } from "./sidebar-tooltip";
 import { collapsibleItemClass } from "./utils";
 
 const navItems = [
@@ -68,34 +69,38 @@ export function NavItems({
         const isLocked = isAuthenticated && item.isPremium && !isPremium;
 
         return (
-          <Link
+          <SidebarTooltip
             key={item.href}
-            href={isLocked ? "/premium" : item.href}
-            onClick={onClose}
-            title={collapsed ? t(item.labelKey) : undefined}
-            className={classnames(
-              collapsibleItemClass(collapsed),
-              "relative text-sm font-medium transition-colors",
-              isActive
-                ? "bg-[#E7E5E4] dark:bg-[#2E2E31]"
-                : "hover:bg-[#E7E5E4] dark:hover:bg-[#2E2E31]",
-            )}
+            enabled={collapsed}
+            label={t(item.labelKey)}
           >
-            <span className="flex h-5 w-5 shrink-0 items-center justify-center">
-              <item.icon />
-            </span>
-            {!collapsed && (
-              <span className="whitespace-nowrap">{t(item.labelKey)}</span>
-            )}
-            {isLocked && !collapsed && (
-              <div className="absolute right-3">
-                <div className="relative flex items-center justify-center size-4 text-brand">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75" />
-                  <CrownIcon size={16} />
+            <Link
+              href={isLocked ? "/premium" : item.href}
+              onClick={onClose}
+              className={classnames(
+                collapsibleItemClass(collapsed),
+                "relative text-sm font-medium transition-colors",
+                isActive
+                  ? "bg-[#E7E5E4] dark:bg-[#2E2E31]"
+                  : "hover:bg-[#E7E5E4] dark:hover:bg-[#2E2E31]",
+              )}
+            >
+              <span className="flex h-5 w-5 shrink-0 items-center justify-center">
+                <item.icon />
+              </span>
+              {!collapsed && (
+                <span className="whitespace-nowrap">{t(item.labelKey)}</span>
+              )}
+              {isLocked && !collapsed && (
+                <div className="absolute right-3">
+                  <div className="relative flex items-center justify-center size-4 text-brand">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75" />
+                    <CrownIcon size={16} />
+                  </div>
                 </div>
-              </div>
-            )}
-          </Link>
+              )}
+            </Link>
+          </SidebarTooltip>
         );
       })}
     </nav>

@@ -45,7 +45,7 @@ export interface IPrice {
 
 export interface IPriceTotal {
   total_price: number;
-  total_sale_price: number;
+  total_sale_price: number | null;
   sale_percentage: number;
 }
 

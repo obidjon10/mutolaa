@@ -4,6 +4,7 @@ import { ReactNode, useEffect } from "react";
 import clsx from "classnames";
 import type { EmblaCarouselType } from "embla-carousel";
 import useEmblaCarousel from "embla-carousel-react";
+import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 
 import { ConditionalRender } from "@/modules/common";
 
@@ -43,13 +44,18 @@ export const SectionCarousel = ({
   apiRef,
   onScrollStateChange,
 }: ISectionCarouselProps) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({
-    // dragFree: true,
-    containScroll: "trimSnaps",
-    align: "start",
-    skipSnaps: true,
-    watchResize: false,
-  });
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      // dragFree: true,
+      containScroll: "trimSnaps",
+      align: "start",
+      skipSnaps: true,
+      watchResize: false,
+    },
+    // `forceWheelAxis: "x"` only listens to horizontal wheel/trackpad input,
+    // so vertical page scroll keeps working on stacked-carousel pages like home.
+    [WheelGesturesPlugin({ forceWheelAxis: "x" })],
+  );
 
   // Watch the carousel container ourselves with a debounce so the sidebar
   // collapse animation (which fires resize events ~60x/sec) only triggers
@@ -125,6 +131,7 @@ export const SectionCarousel = ({
       aria-roledescription="carousel"
       aria-label={ariaLabel}
       onKeyDown={onKeyDown}
+      style={{ contain: "layout paint" }}
       className="overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
     >
       <div

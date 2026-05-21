@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Button, Skeleton, Table } from "@heroui/react";
 
-import { ChevronRightIcon, CreditCardIcon } from "@/modules/icons";
+import { ChevronRightIcon, CreditCardIcon, SearchIcon } from "@/modules/icons";
 
 import { TRANSACTION_CONTENT_TYPE, TRANSACTION_LIMIT } from "../constants";
 import { useTransactionHistory } from "../hooks";
@@ -147,15 +147,21 @@ export function Main() {
             <Table.Body
               items={rows}
               renderEmptyState={() => (
-                <p className="py-12 text-center text-foreground-muted">
-                  {t("hech_narsa_topilmadi")}
-                </p>
+                <div className="flex flex-col bg-white rounded-2xl min-h-[68vh] items-center justify-center py-24 text-center">
+                  <SearchIcon size={32} className="text-foreground-muted" />
+                  <p className="mt-3 text-base font-medium">
+                    {t("malumot_topilmadi")}
+                  </p>
+                  <p className="mt-1 text-sm font-medium text-foreground-muted">
+                    {t("sizda_hech_qanday_tolov_mavjud_emas")}
+                  </p>
+                </div>
               )}
             >
               {(row) => (
                 <Table.Row columns={COLUMNS}>
                   {(col) => (
-                    <Table.Cell className="p-[18px]!">
+                    <Table.Cell className="p-4.5!">
                       {row.kind === "skeleton" ? (
                         <Skeleton className="h-5 w-24 rounded-lg" />
                       ) : (

@@ -32,30 +32,32 @@ export const DiscoverSections = () => {
   useEffect(() => {
     if (!containerNode) return;
 
-    // ResizeObserver on body fires every animation frame while the sidebar
-    // collapses (the Categories chips re-wrap as content widens). Coalesce
-    // bursts into one measurement per frame, and skip setState when the
-    // resolved scroll margin hasn't actually changed.
-    let rafId = 0;
-    const measure = () => {
-      if (rafId) return;
-      rafId = requestAnimationFrame(() => {
-        rafId = 0;
-        const next =
-          containerNode.getBoundingClientRect().top + window.scrollY;
-        setScrollMargin((prev) => (prev === next ? prev : next));
-      });
+    // Initial measurement is immediate. Subsequent measurements are
+    // debounced: ResizeObserver on body fires every animation frame while
+    // the sidebar collapses (categories chips re-wrap, virtual rows render).
+    // A 200ms debounce skips the entire 180ms sidebar animation and runs
+    // exactly one measurement after it settles.
+    const RESIZE_DEBOUNCE_MS = 200;
+    const measureNow = () => {
+      const next = containerNode.getBoundingClientRect().top + window.scrollY;
+      setScrollMargin((prev) => (prev === next ? prev : next));
     };
-    measure();
+    measureNow();
 
-    const resizeObserver = new ResizeObserver(measure);
+    let timeoutId: number | undefined;
+    const schedule = () => {
+      window.clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(measureNow, RESIZE_DEBOUNCE_MS);
+    };
+
+    const resizeObserver = new ResizeObserver(schedule);
     resizeObserver.observe(document.body);
-    window.addEventListener("resize", measure);
+    window.addEventListener("resize", schedule);
 
     return () => {
-      if (rafId) cancelAnimationFrame(rafId);
+      window.clearTimeout(timeoutId);
       resizeObserver.disconnect();
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("resize", schedule);
     };
   }, [containerNode]);
 

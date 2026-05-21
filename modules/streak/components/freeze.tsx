@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 import { useAppSelector } from "@/lib";
-import { FreezeIcon } from "@/modules/icons";
 
 import { useCoinsPackage } from "../hooks";
 import { ICoinsPackage } from "../models";
@@ -56,13 +56,13 @@ export const Freeze: React.FC<IProps> = ({ freezeCount }) => {
             key={item.id}
             type="button"
             onClick={() => handlePackageClick(item)}
-            className="bg-[#FAFAFA] dark:bg-muted-dark flex-1 sm:flex-none sm:w-28.75 rounded-xl gap-y-4 p-2 flex items-center flex-col cursor-pointer hover:bg-[#F0F0F0] dark:hover:bg-[#232323] transition-colors"
+            className="bg-[#FAFAFA] dark:bg-muted-dark h-20 flex-1 sm:flex-none sm:w-28.75 rounded-xl gap-y-4 p-2 flex items-center flex-col cursor-pointer hover:bg-[#F0F0F0] dark:hover:bg-[#232323] transition-colors"
           >
             <div className="flex items-center gap-1">
-              <FreezeIcon className="text-[#0EA5E9]" />
+              <Image src="/freeze.webp" alt="Freeze" width={24} height={24} />
               <p className="text-sm font-semibold">{item.freeze_count}</p>
             </div>
-            <BiligWrapper biligCount={item.coin_cost} />
+            <BiligWrapper coinSize={12} biligCount={item.coin_cost} />
           </button>
         ))}
       </div>

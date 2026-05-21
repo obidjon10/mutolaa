@@ -9,6 +9,8 @@ import { CrownIcon, GearIcon } from "@/modules/icons";
 
 import { ConditionalRender } from "../conditional-render";
 
+import { SidebarTooltip } from "./sidebar-tooltip";
+
 interface IProps {
   collapsed: boolean;
   user?: IUser;
@@ -18,15 +20,17 @@ export const User: React.FC<IProps> = ({ collapsed, user }) => {
   const { push } = useRouter();
 
   return (
-    <div
-      onClick={() => push("/profile")}
-      className={classNames(
-        "mt-4 flex items-center cursor-pointer overflow-hidden transition-[background-color,padding,border-radius,gap] duration-200 ease-out",
-        collapsed
-          ? "bg-transparent dark:bg-transparent p-0 gap-0 rounded-full justify-center"
-          : "bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 p-4 gap-3 rounded-2xl justify-between",
-      )}
-    >
+    <SidebarTooltip enabled={collapsed} label={user?.full_name}>
+      <button
+        type="button"
+        onClick={() => push("/profile")}
+        className={classNames(
+          "mt-4 flex w-full items-center cursor-pointer overflow-hidden transition-[background-color,padding,border-radius,gap] duration-200 ease-out text-left",
+          collapsed
+            ? "bg-transparent dark:bg-transparent p-0 gap-0 rounded-full justify-center"
+            : "bg-white dark:bg-white/5 hover:bg-gray-50 dark:hover:bg-white/10 p-4 gap-3 rounded-2xl justify-between",
+        )}
+      >
       <div
         className={classNames(
           "flex items-center min-w-0",
@@ -60,7 +64,8 @@ export const User: React.FC<IProps> = ({ collapsed, user }) => {
           </div>
         )}
       </div>
-      {!collapsed && <GearIcon />}
-    </div>
+        {!collapsed && <GearIcon />}
+      </button>
+    </SidebarTooltip>
   );
 };

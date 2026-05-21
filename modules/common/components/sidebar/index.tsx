@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { useAppDispatch } from "@/lib";
 import { useAuth, useProfile } from "@/modules/auth";
 import {
+  ArrowRightIcon,
   MutolaaIcon,
   MutolaaLogo,
   SearchIcon,
@@ -23,8 +24,10 @@ import { ConditionalRender } from "../conditional-render";
 import { AuthButtons } from "./auth-section";
 import { LanguageSwitcher } from "./language-switcher";
 import { NavItems } from "./nav-items";
+import { SidebarTooltip } from "./sidebar-tooltip";
 import { ThemeSwitcher } from "./theme-switcher";
 import { User } from "./user";
+import { collapsibleItemClass } from "./utils";
 
 export const SIDEBAR_EXPANDED = 284;
 export const SIDEBAR_COLLAPSED = 78;
@@ -41,6 +44,7 @@ export const Sidebar = ({
   isOpen,
   onClose,
   collapsed,
+  onToggleCollapse,
   initialIsAuthenticated,
 }: IProps) => {
   const t = useTranslations();
@@ -103,31 +107,36 @@ export const Sidebar = ({
           </motion.div>
         </Link>
 
-        <div
-          role="button"
-          tabIndex={0}
-          aria-label={t("kitob_yoki_muallifni_izlang")}
-          onClick={onSearchClick}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              onSearchClick();
-            }
-          }}
-          className={classNames(
-            "flex h-10 cursor-pointer items-center bg-white dark:bg-[#232326] outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 transition-[width,padding,gap,border-radius] duration-200 ease-out",
-            collapsed
-              ? "w-10 p-0 gap-0 justify-center mx-auto rounded-full"
-              : "w-full px-3 gap-2 rounded-xl",
-          )}
+        <SidebarTooltip
+          enabled={collapsed}
+          label={t("kitob_yoki_muallifni_izlang")}
         >
-          <SearchIcon className="shrink-0 text-gray-400" />
-          {!collapsed && (
-            <span className="text-left text-sm text-gray-400 whitespace-nowrap">
-              {t("kitob_yoki_muallifni_izlang")}
-            </span>
-          )}
-        </div>
+          <div
+            role="button"
+            tabIndex={0}
+            aria-label={t("kitob_yoki_muallifni_izlang")}
+            onClick={onSearchClick}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onSearchClick();
+              }
+            }}
+            className={classNames(
+              "flex h-10 cursor-pointer items-center bg-white dark:bg-[#232326] outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 transition-[width,padding,gap,border-radius] duration-200 ease-out",
+              collapsed
+                ? "w-10 p-0 gap-0 justify-center mx-auto rounded-full"
+                : "w-full px-3 gap-2 rounded-xl",
+            )}
+          >
+            <SearchIcon className="shrink-0 text-gray-400" />
+            {!collapsed && (
+              <span className="text-left text-sm text-gray-400 whitespace-nowrap">
+                {t("kitob_yoki_muallifni_izlang")}
+              </span>
+            )}
+          </div>
+        </SidebarTooltip>
 
         <NavItems collapsed={collapsed} onClose={onClose} />
 
@@ -147,6 +156,28 @@ export const Sidebar = ({
           </Link>
         </ConditionalRender>
 
+        <SidebarTooltip enabled={collapsed} label={t("panelni_ochish")}>
+          <button
+            type="button"
+            onClick={onToggleCollapse}
+            className={classNames(
+              collapsibleItemClass(collapsed),
+              "text-sm font-medium hover:bg-[#E1E1E2] dark:hover:bg-white/10 transition-colors cursor-pointer hidden lg:flex",
+            )}
+          >
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center">
+              <ArrowRightIcon
+                size={16}
+                className={classNames("transition-transform duration-200", {
+                  "rotate-180": !collapsed,
+                })}
+              />
+            </span>
+            {!collapsed && (
+              <span className="whitespace-nowrap">{t("panelni_yopish")}</span>
+            )}
+          </button>
+        </SidebarTooltip>
         <LanguageSwitcher collapsed={collapsed} />
         <ThemeSwitcher collapsed={collapsed} />
 
@@ -154,16 +185,19 @@ export const Sidebar = ({
           if={isAuth}
           else={<AuthButtons user={user} collapsed={collapsed} />}
         >
-          <ConditionalRender if={!isLoading} else={
-            <div
-              className={classNames(
-                "mt-4 bg-gray-200 dark:bg-gray-700 animate-pulse transition-[width,height,border-radius] duration-200 ease-out",
-                collapsed
-                  ? "size-10 rounded-full mx-auto"
-                  : "w-full h-14 rounded-xl",
-              )}
-            />
-          }>
+          <ConditionalRender
+            if={!isLoading}
+            else={
+              <div
+                className={classNames(
+                  "mt-4 bg-gray-200 dark:bg-gray-700 animate-pulse transition-[width,height,border-radius] duration-200 ease-out",
+                  collapsed
+                    ? "size-10 rounded-full mx-auto"
+                    : "w-full h-14 rounded-xl",
+                )}
+              />
+            }
+          >
             <User collapsed={collapsed} user={user} />
           </ConditionalRender>
         </ConditionalRender>

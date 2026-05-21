@@ -8,7 +8,7 @@ export const formatDateForDisplay = (
   value?: string | null,
 ): string => {
   if (!value) return "";
-  const [year, month, day] = value.split("-");
+  const [year, month, day] = value.slice(0, 10).split("-");
   if (!year || !month || !day) return "";
   return `${day}.${month}.${year}`;
 };

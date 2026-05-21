@@ -52,7 +52,7 @@ export const PrivateTab = () => {
             <ConditionalRender if={plan?.duration === 12}>
               <div className="bg-white rounded-full p-1.5 flex items-center text-xs gap-0.5 text-brand">
                 <RocketIcon /> {Math.floor(plan?.saved_money_percentage)}%
-                tejang
+                {t("tejang")}
               </div>
             </ConditionalRender>
           </div>

@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { type LocaleType } from "@/i18n/routing";
 import { ChevronRightIcon, GlobeIcon } from "@/modules/icons";
 
+import { SidebarTooltip } from "./sidebar-tooltip";
 import { collapsibleItemClass } from "./utils";
 
 function RadioIndicator({ active }: { active: boolean }) {
@@ -52,28 +53,29 @@ export function LanguageSwitcher({ collapsed }: { collapsed: boolean }) {
         console warning that React Aria emits with a plain <div> child is a
         known Heroui pattern quirk and is benign.
       */}
-      <Dropdown.Trigger>
-        <div
-          title={collapsed ? t("til") : undefined}
-          className={classNames(
-            collapsibleItemClass(collapsed),
-            "text-sm font-medium hover:bg-[#E1E1E2] dark:hover:bg-white/10 transition-colors cursor-pointer",
-          )}
-        >
-          <span className="flex h-5 w-5 shrink-0 items-center justify-center">
-            <GlobeIcon />
-          </span>
-          {!collapsed && (
-            <span className="flex w-full items-center gap-2 whitespace-nowrap">
-              <span className="shrink-0">{t("til")}</span>
-              <span className="flex items-center gap-2 ml-auto text-foreground-muted">
-                <span className="shrink-0">{localeNames[locale]}</span>
-                <ChevronRightIcon />
-              </span>
+      <SidebarTooltip enabled={collapsed} label={t("til")}>
+        <Dropdown.Trigger className="w-full bg-transparent p-0 h-auto">
+          <div
+            className={classNames(
+              collapsibleItemClass(collapsed),
+              "text-sm font-medium hover:bg-[#E1E1E2] dark:hover:bg-white/10 transition-colors cursor-pointer",
+            )}
+          >
+            <span className="flex h-5 w-5 shrink-0 items-center justify-center">
+              <GlobeIcon />
             </span>
-          )}
-        </div>
-      </Dropdown.Trigger>
+            {!collapsed && (
+              <span className="flex w-full items-center gap-2 whitespace-nowrap">
+                <span className="shrink-0">{t("til")}</span>
+                <span className="flex items-center gap-2 ml-auto text-foreground-muted">
+                  <span className="shrink-0">{localeNames[locale]}</span>
+                  <ChevronRightIcon />
+                </span>
+              </span>
+            )}
+          </div>
+        </Dropdown.Trigger>
+      </SidebarTooltip>
       <Dropdown.Popover placement="right" className="rounded-2xl">
         <Dropdown.Menu
           selectionMode="single"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 const BOOK_SPINE_GRADIENT =
@@ -79,6 +79,7 @@ export function BookCover({
 }: IBookCoverProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const frontImgRef = useRef<HTMLImageElement>(null);
   // Seed with the design width so SSR + first client render produce identical
   // depth/spine values — no hydration jump before ResizeObserver fires.
   const [renderedWidth, setRenderedWidth] = useState(width);
@@ -93,6 +94,17 @@ export function BookCover({
     ro.observe(el);
     return () => ro.disconnect();
   }, [fluid]);
+
+  // Cached-image safety net: if the cover comes from the browser cache it can
+  // finish loading before React attaches the onLoad handler, and the load
+  // event is silently missed. Checking `.complete` on mount catches that case
+  // so isLoaded still flips and the opacity transition still plays.
+  useEffect(() => {
+    if (frontImgRef.current?.complete) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsLoaded(true);
+    }
+  }, []);
 
   const depth = getDepth(renderedWidth);
   const spineWidth = Math.round(depth * 1.4);
@@ -132,6 +144,7 @@ export function BookCover({
           }}
         >
           <Image
+            ref={frontImgRef}
             src={cover}
             alt={`Muqova: ${title}`}
             fill

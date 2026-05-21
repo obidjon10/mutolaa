@@ -5,7 +5,13 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Button, Skeleton, toast } from "@heroui/react";
 
-import { ChevronRightIcon, CirclePlusIcon, TrashIcon } from "@/modules/icons";
+import {
+  ChevronRightIcon,
+  CirclePlusIcon,
+  CreditCardIcon,
+  PlusIcon,
+  TrashIcon,
+} from "@/modules/icons";
 
 import { useCardList } from "../hooks";
 import { IUserCard } from "../models";
@@ -64,55 +70,74 @@ export function Main() {
         </div>
       </div>
 
-      <div
-        className="w-full max-w-132 mx-auto mt-9 mb-20 bg-muted dark:bg-muted-dark rounded-3xl p-6"
-        style={{ maxWidth: "531px" }}
-      >
-        <div className="space-y-2">
-          {isLoading
-            ? Array.from({ length: 3 }).map((_, i) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <Skeleton key={i} className="h-14 rounded-xl" />
-              ))
-            : cards?.map((card) => (
-                <div
-                  key={card?.id}
-                  className="w-full flex items-center gap-2 p-2.5 rounded-2xl bg-white dark:bg-black"
-                >
-                  <CardIconContent bg="white" />
-                  <div className="flex-1 text-left">
-                    <div className="font-semibold text-sm">
-                      {card?.card_number}
-                    </div>
-                    <div className="text-xs text-foreground-muted">
-                      {card?.bank?.name}
-                    </div>
-                  </div>
-                  <Button
-                    variant="tertiary"
-                    className="text-red-500"
-                    isIconOnly
-                    onPress={() => handleDeleteOpen(card.id)}
-                  >
-                    <TrashIcon />
-                  </Button>
-                </div>
-              ))}
-        </div>
-
-        <div
-          onClick={() => setIsCardAddOpen(true)}
-          className="w-full flex mt-2 items-center justify-between p-2.5 rounded-2xl bg-white dark:bg-black cursor-pointer"
-        >
-          <div className="flex items-center gap-2">
-            <CardIconContent bg="orange" />
-            <div className="font-medium text-sm">{t("karta_qoshish")}</div>
-          </div>
-          <Button variant="tertiary" isIconOnly>
-            <CirclePlusIcon />
+      {!isLoading && (cards?.length ?? 0) === 0 ? (
+        <div className="flex flex-col items-center justify-center text-center py-32">
+          <CreditCardIcon size={32} className="text-foreground-muted" />
+          <p className="mt-3 text-base font-medium">
+            {t("karta_topilmadi")}
+          </p>
+          <p className="mt-1 text-sm font-medium text-foreground-muted">
+            {t("sizda_saqlangan_kartalar_mavjud_emas")}
+          </p>
+          <Button
+            className="mt-5 bg-brand text-white rounded-full"
+            onPress={() => setIsCardAddOpen(true)}
+          >
+            <PlusIcon />
+            {t("karta_qoshish")}
           </Button>
         </div>
-      </div>
+      ) : (
+        <div
+          className="w-full max-w-132 mx-auto mt-9 mb-20 bg-muted dark:bg-muted-dark rounded-3xl p-6"
+          style={{ maxWidth: "531px" }}
+        >
+          <div className="space-y-2">
+            {isLoading
+              ? Array.from({ length: 3 }).map((_, i) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <Skeleton key={i} className="h-14 rounded-xl" />
+                ))
+              : cards?.map((card) => (
+                  <div
+                    key={card?.id}
+                    className="w-full flex items-center gap-2 p-2.5 rounded-2xl bg-white dark:bg-black"
+                  >
+                    <CardIconContent bg="white" />
+                    <div className="flex-1 text-left">
+                      <div className="font-semibold text-sm">
+                        {card?.card_number}
+                      </div>
+                      <div className="text-xs text-foreground-muted">
+                        {card?.bank?.name}
+                      </div>
+                    </div>
+                    <Button
+                      variant="tertiary"
+                      className="text-red-500"
+                      isIconOnly
+                      onPress={() => handleDeleteOpen(card.id)}
+                    >
+                      <TrashIcon />
+                    </Button>
+                  </div>
+                ))}
+          </div>
+
+          <div
+            onClick={() => setIsCardAddOpen(true)}
+            className="w-full flex mt-2 items-center justify-between p-2.5 rounded-2xl bg-white dark:bg-black cursor-pointer"
+          >
+            <div className="flex items-center gap-2">
+              <CardIconContent bg="orange" />
+              <div className="font-medium text-sm">{t("karta_qoshish")}</div>
+            </div>
+            <Button variant="tertiary" isIconOnly>
+              <CirclePlusIcon />
+            </Button>
+          </div>
+        </div>
+      )}
 
       <CardAddModal
         isOpen={isCardAddOpen}

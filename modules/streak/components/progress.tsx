@@ -33,12 +33,14 @@ export const Progress: React.FC<IProps> = ({
             fill
             src="/tree.webp"
             alt="STREAK TREE"
+            sizes="(min-width: 1024px) 160px, (min-width: 640px) 144px, 128px"
             className="object-contain"
           />
           <Image
             fill
             src="/masked-tree.webp"
             alt="STREAK MASKED TREE"
+            sizes="(min-width: 1024px) 160px, (min-width: 640px) 144px, 128px"
             className="object-contain"
             style={{
               clipPath: `inset(0 0 ${Math.max(0, Math.min(100, progressPercent ?? 0))}% 0)`,

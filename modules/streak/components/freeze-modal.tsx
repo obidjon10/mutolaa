@@ -344,11 +344,10 @@ export function FreezeModal({
               ],
             )}
           >
-            {isOpen && (
-              <div className="relative text-center">
-                <Modal.CloseTrigger className="absolute top-0 right-0 flex size-7 items-center justify-center rounded-full bg-white dark:bg-[#FFFFFF99] text-foreground-muted hover:bg-gray-200 dark:hover:bg-[#ffffff79]">
-                  <XMarkIcon size={16} />
-                </Modal.CloseTrigger>
+            <div className="relative text-center">
+              <Modal.CloseTrigger className="absolute top-0 right-0 flex size-7 items-center justify-center rounded-full bg-white dark:bg-[#FFFFFF99] text-foreground-muted hover:bg-gray-200 dark:hover:bg-[#ffffff79]">
+                <XMarkIcon size={16} />
+              </Modal.CloseTrigger>
 
                 {step === "purchase" && (
                   <>
@@ -454,8 +453,7 @@ export function FreezeModal({
                     </Button>
                   </>
                 )}
-              </div>
-            )}
+            </div>
           </Modal.Dialog>
         </Modal.Container>
       </Modal.Backdrop>
