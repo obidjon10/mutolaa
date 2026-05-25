@@ -47,7 +47,7 @@ const ItemRow = ({
           <Image src={config.image} alt={config.alt} fill sizes="48px" />
         </div>
         <div className="text-sm">
-          <p className="text-foreground text-sm font-medium mb-1">{t(config.labelKey)}</p>
+          <p className="text-sm font-medium mb-1">{t(config.labelKey)}</p>
           <div className="flex items-center gap-1.5">
             <p className="font-semibold">
               {Math.floor(displayPrice ?? 0).toLocaleString("ru")} UZS

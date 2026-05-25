@@ -52,7 +52,7 @@ export const CardListModal = ({
                       key={card.id}
                       type="button"
                       onClick={() => onSelect(card)}
-                      className="w-full flex cursor-pointer items-center gap-2 p-2.5 rounded-2xl bg-muted dark:bg-muted-dark hover:bg-[#e4e4e7] dark:hover:bg-white/10 transition-colors"
+                      className="w-full flex cursor-pointer items-center gap-2 p-2.5 rounded-2xl bg-muted dark:bg-black hover:bg-[#e4e4e7] dark:hover:bg-white/10 transition-colors"
                     >
                       <CardIconContent bg="white" />
                       <div className="flex-1 text-left">
@@ -87,13 +87,13 @@ export const CardListModal = ({
 
             <div
               onClick={onAddCard}
-              className="w-full flex mt-2 items-center justify-between p-2.5 rounded-2xl bg-muted dark:bg-muted-dark hover:bg-[#e4e4e7] dark:hover:bg-white/10 transition-colors"
+              className="w-full flex mt-2 items-center justify-between p-2.5 rounded-2xl bg-muted dark:bg-black hover:bg-[#e4e4e7] dark:hover:bg-white/10 transition-colors"
             >
               <div className="flex items-center gap-2">
                 <CardIconContent bg="orange" />
                 <div className="font-medium text-sm">{t("karta_qoshish")}</div>
               </div>
-              <CirclePlusIcon />
+              <CirclePlusIcon size={20} />
             </div>
           </Modal.Dialog>
         </Modal.Container>

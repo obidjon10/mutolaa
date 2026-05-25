@@ -132,7 +132,7 @@ export const OtpForm = () => {
           type="button"
           onClick={onResend}
           disabled={secondsLeft > 0 || isResending}
-          className="text-foreground font-medium underline disabled:no-underline disabled:text-foreground-muted disabled:cursor-not-allowed"
+          className="text-foreground dark:text-white font-medium underline disabled:no-underline disabled:text-foreground-muted disabled:cursor-not-allowed"
         >
           {resendLabel}
         </button>

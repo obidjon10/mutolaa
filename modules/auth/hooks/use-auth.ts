@@ -30,8 +30,9 @@ export const useAuth = () => {
         localStorage.setItem(REFRESH_TOKEN_KEY, refresh);
         setTokenCookie(access);
       }
+      queryClient.invalidateQueries();
     },
-    [dispatch],
+    [dispatch, queryClient],
   );
 
   const logout = useCallback(() => {

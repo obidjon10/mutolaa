@@ -7,7 +7,6 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { Link, useRouter } from "@/i18n/navigation";
 import { useAppSelector } from "@/lib";
-import type { IBookDetail } from "@/modules/book-detail";
 import { ConditionalRender } from "@/modules/common";
 import { useTransactionStatus } from "@/modules/payment";
 import { PaymentPendingModal } from "@/modules/payment/components/payment-pending-modal";
@@ -17,13 +16,26 @@ import {
   useBookSelection,
   usePurchaseBook,
 } from "../hooks";
+import { findPurchaseItem, type IBookPurchaseData } from "../models";
 
 interface IProps {
-  bookDetail: IBookDetail;
+  purchaseData: IBookPurchaseData;
   finalPrice: number;
+  originalPrice: number;
 }
 
-export const TotalSection = ({ bookDetail, finalPrice }: IProps) => {
+export const TotalSection = ({
+  purchaseData,
+  finalPrice,
+  originalPrice,
+}: IProps) => {
+  const { book } = purchaseData;
+  const ebookItem = findPurchaseItem(purchaseData?.purchase_detail, "ebook");
+  const audioItem = findPurchaseItem(
+    purchaseData?.purchase_detail,
+    "audiobook",
+  );
+  const hasDiscount = originalPrice > finalPrice;
   const t = useTranslations();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -54,7 +66,9 @@ export const TotalSection = ({ bookDetail, finalPrice }: IProps) => {
       setPendingPaymentUrl(null);
       toast.success(t("tolov_muvaffaqiyatli"));
       queryClient.invalidateQueries({ queryKey: ["book-detail"] });
-      router.push(`/book/${bookDetail.slug}`);
+      // Replace (not push) so the back button skips the payment page
+      // and returns the user to wherever they came from before /book-payment.
+      router.replace(`/book/${book.slug}`);
     },
     () => {
       setPendingOrderId(null);
@@ -88,9 +102,9 @@ export const TotalSection = ({ bookDetail, finalPrice }: IProps) => {
     if (!canPay) return;
 
     const basePayload = {
-      book: bookDetail.id,
-      ebook: isEbookSelected ? (bookDetail.ebook?.id ?? null) : null,
-      audiobook: isAudioSelected ? (bookDetail.audiobook?.id ?? null) : null,
+      book: book.id,
+      ebook: isEbookSelected ? (ebookItem?.id ?? null) : null,
+      audiobook: isAudioSelected ? (audioItem?.id ?? null) : null,
     };
 
     try {
@@ -98,13 +112,13 @@ export const TotalSection = ({ bookDetail, finalPrice }: IProps) => {
         await purchaseBook({
           ...basePayload,
           coin_sale:
-            bookDetail.is_coin_sale_available && isCoinSaleOn
+            book.is_coin_sale_available && isCoinSaleOn
               ? selectedCoinSaleId
               : null,
           card: activeCardId!,
         });
         toast.success(t("tolov_muvaffaqiyatli"));
-        router.push(`/book/${bookDetail.slug}`);
+        router.replace(`/book/${book.slug}`);
         queryClient.invalidateQueries({ queryKey: ["book-detail"] });
       } else {
         const { payment_url: paymentUrl, id: orderId } = await createOrder({
@@ -123,7 +137,7 @@ export const TotalSection = ({ bookDetail, finalPrice }: IProps) => {
   return (
     <>
       <div className="bg-white dark:bg-black rounded-2xl p-4">
-        <p className="text-sm text-foreground font-medium mb-6">
+        <p className="text-sm text-foreground dark:text-white font-medium mb-6">
           {t.rich("oferta_warning", {
             link: (chunks) => (
               <Link
@@ -136,6 +150,16 @@ export const TotalSection = ({ bookDetail, finalPrice }: IProps) => {
           })}
         </p>
         <div className="flex items-center gap-4">
+          <div className="flex items-baseline gap-2 whitespace-nowrap">
+            <span className="font-semibold text-2xl">
+              {Math.floor(finalPrice).toLocaleString("ru")} UZS
+            </span>
+            {hasDiscount && (
+              <span className="text-sm font-medium line-through text-[#EF4444]">
+                {Math.floor(originalPrice).toLocaleString("ru")} UZS
+              </span>
+            )}
+          </div>
           <Button
             size="lg"
             className="flex-1 rounded-full"
@@ -152,9 +176,6 @@ export const TotalSection = ({ bookDetail, finalPrice }: IProps) => {
               </>
             )}
           </Button>
-          <div className="font-semibold text-2xl whitespace-nowrap">
-            {Math.floor(finalPrice).toLocaleString("ru")} UZS
-          </div>
         </div>
       </div>
 

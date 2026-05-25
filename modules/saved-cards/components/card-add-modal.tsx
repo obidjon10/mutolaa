@@ -30,7 +30,7 @@ export const CardAddModal = ({
           {isOpen && (
             <div>
               <div className="flex items-center justify-between mb-4">
-                <CardIconContent bg="gray" />
+                <CardIconContent bg="grayBlack" />
 
                 <Modal.CloseTrigger className="flex size-6 items-center justify-center rounded-full bg-gray-100 dark:bg-white/5 text-gray-500 hover:bg-gray-200 dark:hover:bg-white/10">
                   <XMarkIcon size={16} />

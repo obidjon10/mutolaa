@@ -233,7 +233,7 @@
   "xarid_qilish": "Xarid qılıw",
   "elektron_kitob": "Elektron kitob",
   "audiokitob": "Audiokitob",
-  "tejamkor_harid": "Tejamkor harid",
+  "tejamkor_harid": "Tejamkor xarid",
   "elektron_va_audio": "Elektron + Audio",
   "filtr": "Filtr",
   "filtrlarni_tozalash": "Filtrlerdi tazalaw",
@@ -338,7 +338,7 @@
   "qoshimcha_xarid": "Qosımsha satıp alıw",
   "bank_kartasi": "Bank kartası",
   "tolov_tizimi": "Tólem sistemaları",
-  "oferta_warning": "Siz bul kitapty satıp alıw arqalı <link>Jámiyet Ofertası</link> shártlerine kelisesiz",
+  "oferta_warning": "Kitapty satıp alıw arqalı <link>Jámiyet Ofertası</link> shártlerine kelisesiz",
   "tushunarli": "Túsiniktili",
   "qayta_urinish": "Qayta urınıw",
   "mavjud_biliglaringiz": "Mawjut biligleringiz",
@@ -416,5 +416,6 @@
   "hozirda_premiumingiz_aktiv": "Házirde sizdiń premiumıńız belsendi",
   "restore_subscription_description": "Házirgi premium {validityDate} ge shekem ámel etedi. Abonementti tiklasańız tólem ámeldegi abonement juwmaqlanǵannan keyin alınadı.",
   "tiklash": "Tiklаw",
-  "tolov_amalga_oshirildi": "Tólem ámelge asırıldı"
+  "tolov_amalga_oshirildi": "Tólem ámelge asırıldı",
+  "xarid_qilgan_kitoblarim": "Satıp alǵan kitaplarım"
 }

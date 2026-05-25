@@ -12,6 +12,7 @@ import { useAuth, useProfile } from "@/modules/auth";
 import { ConditionalRender, useConfirm } from "@/modules/common";
 import {
   BiligCoinIcon,
+  BookOpenIcon,
   CalendarIcon,
   CircleQuestionIcon,
   CopyTransparentIcon,
@@ -138,20 +139,25 @@ export const ProfilePage = () => {
           />
           <ProfileRow
             hasArrow
-            isLast={!user?.show_manage_subscription}
             icon={<ReceiptIcon />}
             label={t("tolov_tarixi")}
             onClick={() => push("/transaction-history")}
           />
           <ConditionalRender if={user?.show_manage_subscription}>
             <ProfileRow
-              isLast
               hasArrow
               icon={<CalendarIcon />}
               label={t("obuna_boshqaruvi")}
               onClick={() => push("/manage-subscription")}
             />
           </ConditionalRender>
+          <ProfileRow
+            isLast
+            hasArrow
+            icon={<BookOpenIcon />}
+            label={t("xarid_qilgan_kitoblarim")}
+            onClick={() => push("/purchased-books")}
+          />
         </ProfileSection>
 
         <ProfileSection title={t("tizim")}>

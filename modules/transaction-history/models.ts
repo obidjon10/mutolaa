@@ -4,7 +4,7 @@ export interface ITransactionHistory {
   id: number;
   content_type: TransactionContentType;
   paid_at: string;
-  order: IOrder;
+  order: IOrder | null;
 }
 
 export interface IOrder {

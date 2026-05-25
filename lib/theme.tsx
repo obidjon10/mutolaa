@@ -49,13 +49,11 @@ export function ThemeProvider({
   initialTheme?: ThemeType;
   children: React.ReactNode;
 }) {
-  const [theme, setTheme] = useState<ThemeType>(() => {
-    if (typeof document === "undefined") return initialTheme;
-
-    const match = document.cookie.match(/(?:^|; )theme=(dark|light)/);
-
-    return (match?.[1] as ThemeType | undefined) ?? initialTheme;
-  });
+  // initialTheme comes from the server reading the THEME cookie in the
+  // layout. Trust it as-is on the client to guarantee SSR/CSR parity —
+  // re-reading document.cookie here causes hydration mismatches when the
+  // initializer runs.
+  const [theme, setTheme] = useState<ThemeType>(initialTheme);
 
   const toggleTheme = useCallback(() => {
     setTheme((prev) => {

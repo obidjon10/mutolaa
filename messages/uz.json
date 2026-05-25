@@ -233,7 +233,7 @@
   "xarid_qilish": "Xarid qilish",
   "elektron_kitob": "Elektron kitob",
   "audiokitob": "Audiokitob",
-  "tejamkor_harid": "Tejamkor harid",
+  "tejamkor_harid": "Tejamkor xarid",
   "elektron_va_audio": "Elektron + Audio",
   "filtr": "Filtr",
   "filtrlarni_tozalash": "Filtrlarni tozalash",
@@ -308,7 +308,7 @@
   "pagination_count": "Jami {total} ta tranzaksiyadan {from}-{to}",
   "tur": "Tur",
   "tarif": "Tarif",
-  "tolov_usuli": "To'lov usuli",
+  "tolov_usuli": "To‘lov usuli",
   "summa": "Summa",
   "karta_raqami": "Karta raqami",
   "bugungi_reja": "Bugungi reja",
@@ -338,7 +338,7 @@
   "qoshimcha_xarid": "Qo‘shimcha xarid",
   "bank_kartasi": "Bank kartasi",
   "tolov_tizimi": "To‘lov tizimi",
-  "oferta_warning": "Siz bu kitobni xarid qilish orqali <link>Ommaviy Oferta</link> shartlariga rozi bo‘lmoqdasiz",
+  "oferta_warning": "Kitobni xarid qilish orqali <link>Ommaviy Oferta</link> shartlariga rozi bo‘lmoqdasiz",
   "tushunarli": "Tushunarli",
   "qayta_urinish": "Qayta urinish",
   "mavjud_biliglaringiz": "Mavjud biliglaringiz",
@@ -416,5 +416,6 @@
   "hozirda_premiumingiz_aktiv": "Hozirda sizning premiumingiz aktiv",
   "restore_subscription_description": "Hozirgi premium {validityDate} gacha amal qiladi. Obunani tiklasangiz to‘lov amaldagi obuna tugaganidan so‘ng yechib olinadi.",
   "tiklash": "Tiklash",
-  "tolov_amalga_oshirildi": "To‘lov amalga oshirildi"
+  "tolov_amalga_oshirildi": "To‘lov amalga oshirildi",
+  "xarid_qilgan_kitoblarim": "Xarid qilgan kitoblarim"
 }

@@ -66,7 +66,7 @@ export const SavedCard = () => {
             </TextField>
           }
         >
-          <div className="flex items-center justify-between border border-[#E4E4E7] rounded-2xl p-2.5">
+          <div className="flex items-center justify-between border border-[#E4E4E7] dark:border-[#27272A] rounded-2xl p-2.5">
             <div className="flex items-center gap-3">
               <CardIconContent bg="gray" />
               <div>

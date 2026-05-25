@@ -2,11 +2,13 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import { Separator } from "@heroui/react";
 
 import { useAppDispatch, useAppSelector } from "@/lib";
-import { useUserBalance } from "@/modules/common";
+import { ThemedLogo } from "@/modules/common";
 
+import { useBookPurchaseData } from "../hooks";
 import { setBookPaymentProvider } from "../store";
 
 const PROVIDER_CONFIG: Record<
@@ -15,26 +17,50 @@ const PROVIDER_CONFIG: Record<
 > = {
   click: {
     label: "CLICK",
-    content: <Image src="/click.svg" alt="CLICK" width={54} height={15} />,
+    content: (
+      <ThemedLogo
+        src="/click.svg"
+        darkSrc="/click-dark.svg"
+        alt="CLICK"
+        width={54}
+        height={15}
+      />
+    ),
   },
   payme: {
     label: "PAYME",
-    content: <Image src="/payme.svg" alt="PAYME" width={56} height={16} />,
+    content: (
+      <ThemedLogo
+        src="/payme.svg"
+        darkSrc="/payme-dark.svg"
+        alt="PAYME"
+        width={56}
+        height={16}
+      />
+    ),
   },
   xazna: {
     label: "XAZNA",
-    content: <Image src="/xazna.svg" alt="XAZNA" width={74} height={15} />,
+    content: (
+      <ThemedLogo
+        src="/xazna.svg"
+        darkSrc="/xazna-dark.svg"
+        alt="XAZNA"
+        width={74}
+        height={15}
+      />
+    ),
   },
   octo: {
     label: "OCTO",
     content: (
       <div className="flex items-center gap-4 py-4">
         <Image src="/visa.svg" alt="Visa" width={22} height={22} />
-        <Separator orientation="vertical" />
+        <Separator orientation="vertical" className="dark:bg-foreground-muted" />
         <Image src="/mastercard.svg" alt="Mastercard" width={22} height={22} />
-        <Separator orientation="vertical" />
+        <Separator orientation="vertical" className="dark:bg-foreground-muted" />
         <Image src="/uzcard.svg" alt="Uzcard" width={22} height={22} />
-        <Separator orientation="vertical" />
+        <Separator orientation="vertical" className="dark:bg-foreground-muted" />
         <Image src="/humo.svg" alt="Humo" width={22} height={22} />
       </div>
     ),
@@ -43,12 +69,13 @@ const PROVIDER_CONFIG: Record<
 
 export const Providers = () => {
   const dispatch = useAppDispatch();
+  const { slug } = useParams<{ slug: string }>();
   const selectedProvider = useAppSelector(
     ({ bookPayment }) => bookPayment.provider,
   );
-  const { userBalance } = useUserBalance();
+  const { purchaseData } = useBookPurchaseData(slug);
 
-  const methods = userBalance?.available_payment_methods ?? [];
+  const methods = purchaseData?.available_payment_methods ?? [];
 
   useEffect(() => {
     if (!selectedProvider && methods[0]) {

@@ -52,7 +52,7 @@ export function Book({
 
       <div className="space-y-1 px-1 pb-1 pt-3 sm:px-2 text-center">
         <ConditionalRender if={title}>
-          <p className="line-clamp-1 text-pretty font-medium text-foreground">
+          <p className="line-clamp-1 text-pretty font-medium text-foreground dark:text-white">
             {title}
           </p>
         </ConditionalRender>

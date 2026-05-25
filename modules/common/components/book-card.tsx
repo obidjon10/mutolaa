@@ -101,7 +101,7 @@ export function BookCard({
       </div>
 
       <div className="space-y-1 px-1 pb-1 pt-3 sm:px-2">
-        <p className="line-clamp-2 text-pretty text-sm font-semibold text-foreground">
+        <p className="line-clamp-2 text-pretty text-sm font-semibold text-foreground dark:text-white">
           {title}
         </p>
         {author ? (

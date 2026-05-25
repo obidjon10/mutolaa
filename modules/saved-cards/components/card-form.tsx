@@ -7,6 +7,7 @@ import {
   FieldError,
   InputGroup,
   Label,
+  Spinner,
   TextField,
 } from "@heroui/react";
 
@@ -42,7 +43,7 @@ export const CardForm = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const expireRef = useRef<HTMLInputElement>(null);
   const { mutate: createCard, isPending } = useCreateCard();
-  
+
   const isValid =
     cardNumber.replace(/\s/g, "").length === 16 && expireDate.length === 5;
 
@@ -70,8 +71,7 @@ export const CardForm = ({
       {
         onSuccess: (data) => onSuccess(data.user_card_id, data.phone),
         onError: (err: any) => {
-          const message =
-            err?.response?.data?.errors?.[0]?.message ?? null;
+          const message = err?.response?.data?.errors?.[0]?.message ?? null;
           setErrorMessage(message);
         },
       },
@@ -119,8 +119,8 @@ export const CardForm = ({
         }
       >
         <TextField isInvalid={!!errorMessage}>
-          <Label>{t("karta_qoshish")}</Label>
-          <InputGroup className="w-full bg-muted dark:bg-muted-dark shadow-none">
+          <Label className="dark:text-white">{t("karta_qoshish")}</Label>
+          <InputGroup className="w-full bg-muted dark:bg-black shadow-none">
             <InputGroup.Input
               placeholder="0000 0000 0000 0000"
               value={cardNumber}
@@ -149,6 +149,7 @@ export const CardForm = ({
               isPending={isPending}
               onPress={onSubmit}
             >
+              {isPending ? <Spinner size="sm" color="current" /> : null}
               {t("tasdiqlash")}
             </Button>
           </div>

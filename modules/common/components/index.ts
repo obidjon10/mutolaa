@@ -15,3 +15,4 @@ export * from "./section-carousel";
 export * from "./section-header";
 export * from "./sidebar";
 export * from "./stagger-animation";
+export * from "./themed-logo";

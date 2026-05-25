@@ -1,11 +1,11 @@
 "use client";
 
 import { ReactNode, useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Button, Skeleton, Table } from "@heroui/react";
 
+import { ThemedLogo } from "@/modules/common";
 import { ChevronRightIcon, CreditCardIcon, SearchIcon } from "@/modules/icons";
 
 import { TRANSACTION_CONTENT_TYPE, TRANSACTION_LIMIT } from "../constants";
@@ -29,53 +29,78 @@ const formatAmount = (amount?: string) => {
 };
 
 const PROVIDER_CONFIG: Record<string, ReactNode> = {
-  click: <Image src="/click.svg" alt="CLICK" width={54} height={15} />,
-  payme: <Image src="/payme.svg" alt="PAYME" width={56} height={16} />,
-  xazna: <Image src="/xazna.svg" alt="XAZNA" width={74} height={15} />,
-  octo: <span className="font-medium">OCTO</span>,
+  click: (
+    <ThemedLogo
+      src="/click.svg"
+      darkSrc="/click-dark.svg"
+      alt="CLICK"
+      width={54}
+      height={15}
+    />
+  ),
+  payme: (
+    <ThemedLogo
+      src="/payme.svg"
+      darkSrc="/payme-dark.svg"
+      alt="PAYME"
+      width={56}
+      height={16}
+    />
+  ),
+  xazna: (
+    <ThemedLogo
+      src="/xazna.svg"
+      darkSrc="/xazna-dark.svg"
+      alt="XAZNA"
+      width={74}
+      height={15}
+    />
+  ),
+  octo: <span className="font-medium">OCTO BANK</span>,
 };
 
 const renderName = (tx: ITransactionHistory, t: TranslatorType) => {
   let label: string;
-  if (tx.content_type === TRANSACTION_CONTENT_TYPE.BOOK_ORDER) {
-    label = tx.order.book?.title ?? "—";
-  } else if (tx.order.card) {
+  if (tx?.content_type === TRANSACTION_CONTENT_TYPE.BOOK_ORDER) {
+    label = tx?.order?.book?.title ?? "—";
+  } else if (tx?.order?.card) {
     label = t("mutolaa_premium_obunasi");
   } else {
-    label = t("mutolaa_premium_one_time", {
-      tariff: (tx.order.tariff_name ?? "").toLowerCase(),
-    });
+    const tariff = tx?.order?.tariff_name?.toLowerCase();
+    label = tariff
+      ? t("mutolaa_premium_one_time", { tariff })
+      : t("mutolaa_premium");
   }
-  return <div className="text-foreground">{label}</div>;
+  return <div className="text-foreground dark:text-white">{label}</div>;
 };
 
 const renderProductType = (tx: ITransactionHistory, t: TranslatorType) => {
   let label: string;
-  if (tx.content_type === TRANSACTION_CONTENT_TYPE.BOOK_ORDER) {
+  if (tx?.content_type === TRANSACTION_CONTENT_TYPE.BOOK_ORDER) {
     const { is_ebook_purchased: isEbook, is_audiobook_purchased: isAudio } =
-      tx.order.book ?? {};
+      tx?.order?.book ?? {};
     if (isEbook && isAudio) label = t("elektron_va_audio_kitob");
     else if (isEbook) label = t("elektron_kitob");
     else if (isAudio) label = t("audiokitob");
     else label = "—";
   } else {
-    label = tx.order.card
-      ? t("tariff_obuna", { tariff: tx.order.tariff_name ?? "" })
+    label = tx?.order?.card
+      ? t("tariff_obuna", { tariff: tx?.order?.tariff_name ?? "" })
       : t("bir_martalik_xarid");
   }
   return <span className="text-foreground-muted">{label}</span>;
 };
 
 const renderPaymentMethod = (tx: ITransactionHistory) => {
-  if (tx.order.card) {
+  if (tx?.order?.card) {
     return (
       <span className="inline-flex items-center gap-2">
         <CreditCardIcon size={20} />
-        <span>{tx.order.card.card_number}</span>
+        <span>{tx?.order?.card?.card_number}</span>
       </span>
     );
   }
-  return PROVIDER_CONFIG[tx.order.provider] ?? "—";
+  return PROVIDER_CONFIG[tx?.order?.provider ?? ""] ?? <span className="text-foreground dark:text-white">—</span>;
 };
 
 const COLUMNS = [
@@ -91,7 +116,9 @@ const COLUMNS = [
   {
     id: "price",
     labelKey: "narx",
-    render: (tx: ITransactionHistory) => formatAmount(tx.order.amount),
+    render: (tx: ITransactionHistory) => (
+       <span className="text-foreground dark:text-white">{ formatAmount(tx?.order?.amount)}</span>
+    ),
   },
   { id: "payment", labelKey: "tolov_turi", render: renderPaymentMethod },
 ] as const;
@@ -111,7 +138,7 @@ export function Main() {
     | { id: string; kind: "skeleton" }
     | { id: number; kind: "data"; tx: ITransactionHistory };
 
-  const rows: RowType[] = isLoading
+  const rows: RowType[] =  isLoading
     ? Array.from({ length: TRANSACTION_LIMIT }, (_, i) => ({
         id: `skeleton-${i}`,
         kind: "skeleton",
@@ -130,10 +157,10 @@ export function Main() {
         <h1 className="text-2xl font-semibold">{t("tolov_tarixi")}</h1>
       </div>
 
-      <Table>
+      <Table className="bg-muted dark:bg-muted-dark">
         <Table.ScrollContainer>
           <Table.Content aria-label={t("tolov_tarixi")}>
-            <Table.Header columns={COLUMNS}>
+            <Table.Header columns={COLUMNS} className="bg-muted! dark:bg-muted-dark!">
               {(col) => (
                 <Table.Column
                   id={col.id}
@@ -147,7 +174,7 @@ export function Main() {
             <Table.Body
               items={rows}
               renderEmptyState={() => (
-                <div className="flex flex-col bg-white rounded-2xl min-h-[68vh] items-center justify-center py-24 text-center">
+                <div className="flex flex-col bg-white dark:bg-black rounded-2xl min-h-[68vh] items-center justify-center py-24 text-center">
                   <SearchIcon size={32} className="text-foreground-muted" />
                   <p className="mt-3 text-base font-medium">
                     {t("malumot_topilmadi")}
@@ -161,7 +188,7 @@ export function Main() {
               {(row) => (
                 <Table.Row columns={COLUMNS}>
                   {(col) => (
-                    <Table.Cell className="p-4.5!">
+                    <Table.Cell className="p-4.5! bg-white! dark:bg-black!">
                       {row.kind === "skeleton" ? (
                         <Skeleton className="h-5 w-24 rounded-lg" />
                       ) : (

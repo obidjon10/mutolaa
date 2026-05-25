@@ -6,10 +6,10 @@ import { useTranslations } from "next-intl";
 
 import { useRouter } from "@/i18n/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib";
-import { type IPrice,useBookDetail } from "@/modules/book-detail";
 import { ChevronRightIcon } from "@/modules/icons";
 
-import { useBookSelection, useCoinSales } from "../hooks";
+import { useBookPurchaseData, useBookSelection } from "../hooks";
+import { findPurchaseItem } from "../models";
 import { resetBookPayment } from "../store";
 
 import { CoinSaleCard } from "./coin-sale-card";
@@ -18,65 +18,85 @@ import { PaymentMethodCard } from "./payment-method-card";
 import { BookPaymentSkeleton } from "./skeleton";
 import { TotalSection } from "./total-section";
 
-const itemPrice = (price?: IPrice) => {
-  if (!price) return 0;
-  return price.sale_percentage > 0 ? price.sale_price : price.original_price;
-};
-
 export const Main = () => {
   const t = useTranslations();
   const { back } = useRouter();
   const dispatch = useAppDispatch();
   const { slug } = useParams<{ slug: string }>();
-  const { bookDetail, isLoading } = useBookDetail(slug);
+  const { purchaseData, isLoading } = useBookPurchaseData(slug);
 
   const { isEbookSelected, isAudioSelected } = useBookSelection();
-  const { coinSales } = useCoinSales();
   const isCoinSaleOn = useAppSelector(
-    ({ bookPayment }) => bookPayment.isCoinSaleOn,
+    ({ bookPayment }) => bookPayment?.isCoinSaleOn,
   );
   const selectedCoinSaleId = useAppSelector(
-    ({ bookPayment }) => bookPayment.selectedCoinSaleId,
+    ({ bookPayment }) => bookPayment?.selectedCoinSaleId,
   );
-  const activeTab = useAppSelector(({ bookPayment }) => bookPayment.activeTab);
+  const activeTab = useAppSelector(
+    ({ bookPayment }) => bookPayment?.activeTab,
+  );
 
   const isCoinSaleVisible =
-    !!bookDetail?.is_coin_sale_available && activeTab === "card";
+    !!purchaseData?.book?.is_coin_sale_available && activeTab === "card";
 
   // Reset all transient state on unmount so the next visit starts clean.
   useEffect(() => () => void dispatch(resetBookPayment()), [dispatch]);
 
-  const finalPrice = useMemo(() => {
-    if (!bookDetail) return 0;
+  const { finalPrice, originalPrice } = useMemo(() => {
+    if (!purchaseData) return { finalPrice: 0, originalPrice: 0 };
+
+    const ebookItem = findPurchaseItem(purchaseData?.purchase_detail, "ebook");
+    const audioItem = findPurchaseItem(
+      purchaseData?.purchase_detail,
+      "audiobook",
+    );
+    const itemPrice = (item?: typeof ebookItem) => {
+      if (!item) return 0;
+      return (item?.price?.sale_percentage ?? 0) > 0
+        ? (item?.price?.sale_price ?? 0)
+        : (item?.price?.original_price ?? 0);
+    };
 
     let subtotal = 0;
+    let baseline = 0;
     if (isEbookSelected && isAudioSelected) {
-      subtotal = bookDetail.price?.total_sale_price ?? 0;
+      subtotal = purchaseData?.bundle?.total_sale_price ?? 0;
+      baseline = purchaseData?.bundle?.total_price ?? 0;
     } else if (isEbookSelected) {
-      subtotal = itemPrice(bookDetail.ebook?.price);
+      subtotal = itemPrice(ebookItem);
+      baseline = ebookItem?.price?.original_price ?? 0;
     } else if (isAudioSelected) {
-      subtotal = itemPrice(bookDetail.audiobook?.price);
+      subtotal = itemPrice(audioItem);
+      baseline = audioItem?.price?.original_price ?? 0;
     }
 
+    let final = subtotal;
     if (isCoinSaleVisible && isCoinSaleOn && selectedCoinSaleId) {
-      const selected = coinSales.find((s) => s.id === selectedCoinSaleId);
+      const selected = purchaseData?.coin_sales?.find(
+        (s) => s?.id === selectedCoinSaleId,
+      );
       if (selected) {
-        return subtotal * (1 - selected.discount_percentage / 100);
+        final = subtotal * (1 - (selected?.discount_percentage ?? 0) / 100);
       }
     }
 
-    return subtotal;
+    return { finalPrice: final, originalPrice: baseline };
   }, [
-    bookDetail,
+    purchaseData,
     isEbookSelected,
     isAudioSelected,
     isCoinSaleVisible,
     isCoinSaleOn,
     selectedCoinSaleId,
-    coinSales,
   ]);
 
-  if (isLoading || !bookDetail) return <BookPaymentSkeleton />;
+  if (isLoading || !purchaseData) return <BookPaymentSkeleton />;
+
+  const ebookItem = findPurchaseItem(purchaseData?.purchase_detail, "ebook");
+  const audioItem = findPurchaseItem(
+    purchaseData?.purchase_detail,
+    "audiobook",
+  );
 
   return (
     <div className="mx-auto my-4 mr-4 p-6 sm:p-8 min-h-[94.4vh] rounded-2xl bg-white dark:bg-black shadow-card">
@@ -88,7 +108,9 @@ export const Main = () => {
           <ChevronRightIcon size={24} className="rotate-180" />
         </div>
         <div>
-          <h1 className="text-xl font-semibold">{bookDetail.title}</h1>
+          <h1 className="text-xl font-semibold">
+            {purchaseData?.book?.title}
+          </h1>
           <p className="text-foreground-muted text-sm">
             {t("kitob_xarid_qilish")}
           </p>
@@ -97,20 +119,20 @@ export const Main = () => {
 
       <div className="mx-auto max-w-131.5 bg-muted dark:bg-muted-dark rounded-4xl p-6 space-y-3.5">
         <ItemsCard
-          ebookPrice={bookDetail.ebook?.price}
-          audioPrice={bookDetail.audiobook?.price}
-          hasEbook={bookDetail.has_ebook}
-          hasAudio={bookDetail.has_audiobook}
-          isEbookPurchased={
-            bookDetail.user_book_rights?.is_ebook_purchased
-          }
-          isAudioBookPurchased={
-            bookDetail.user_book_rights?.is_audiobook_purchased
-          }
+          ebookPrice={ebookItem?.price}
+          audioPrice={audioItem?.price}
+          hasEbook={!!ebookItem}
+          hasAudio={!!audioItem}
+          isEbookPurchased={!!ebookItem?.is_purchased}
+          isAudioBookPurchased={!!audioItem?.is_purchased}
         />
         {isCoinSaleVisible && <CoinSaleCard />}
         <PaymentMethodCard />
-        <TotalSection bookDetail={bookDetail} finalPrice={finalPrice} />
+        <TotalSection
+          purchaseData={purchaseData}
+          finalPrice={finalPrice}
+          originalPrice={originalPrice}
+        />
       </div>
     </div>
   );

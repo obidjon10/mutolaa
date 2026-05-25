@@ -84,7 +84,7 @@ export const ActiveFiltersBar = ({ groups }: IProps) => {
               type="button"
               onClick={group.onClear}
               aria-label={`Remove ${group.firstLabel ?? "filter"}`}
-              className="cursor-pointer text-foreground-muted hover:text-foreground"
+              className="cursor-pointer text-foreground-muted hover:text-foreground dark:hover:text-white"
             >
               <XMarkIcon size={14} />
             </button>

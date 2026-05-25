@@ -10,7 +10,7 @@ import { IUserCard, useVerifyCard } from "../";
 
 const OTP_LENGTH = 6;
 const SLOTS_CLASSNAME =
-  "h-10 w-9 rounded-xl bg-muted dark:bg-muted-dark text-xl font-semibold text-center data-active:border-orange-500 dark:data-active:border-orange-500 shadow-none";
+  "h-10 w-9 rounded-xl bg-muted dark:bg-black text-xl font-semibold text-center data-active:border-orange-500 dark:data-active:border-orange-500 shadow-none";
 
 interface ICardOtpModalProps {
   isOpen: boolean;
@@ -119,7 +119,7 @@ export const CardOtpModal = ({
                       <InputOTP.Slot className={SLOTS_CLASSNAME} index={1} />
                       <InputOTP.Slot className={SLOTS_CLASSNAME} index={2} />
                     </InputOTP.Group>
-                    <InputOTP.Separator />
+                    <InputOTP.Separator className="dark:bg-foreground-muted" />
                     <InputOTP.Group>
                       <InputOTP.Slot className={SLOTS_CLASSNAME} index={3} />
                       <InputOTP.Slot className={SLOTS_CLASSNAME} index={4} />

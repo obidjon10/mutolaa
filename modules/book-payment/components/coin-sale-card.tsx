@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Skeleton, Switch } from "@heroui/react";
 import classNames from "classnames";
@@ -9,13 +10,17 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "@/lib";
 import { BiligCoinIcon, BiligCoinInactiveIcon } from "@/modules/icons";
 
-import { useCoinSales } from "../hooks";
+import { useBookPurchaseData } from "../hooks";
 import { setIsCoinSaleOn, setSelectedCoinSaleId } from "../store";
 
 export const CoinSaleCard = () => {
   const t = useTranslations();
   const dispatch = useAppDispatch();
-  const { coinSales, isLoading } = useCoinSales();
+  const { slug } = useParams<{ slug: string }>();
+  const { purchaseData, isLoading } = useBookPurchaseData(slug);
+  const coinSales = [...(purchaseData?.coin_sales ?? [])].sort(
+    (a, b) => b.discount_percentage - a.discount_percentage,
+  );
   const isCoinSaleOn = useAppSelector(
     ({ bookPayment }) => bookPayment.isCoinSaleOn,
   );
@@ -67,7 +72,7 @@ export const CoinSaleCard = () => {
             <div className="flex items-center gap-2">
               <span
                 className={classNames("font-semibold", {
-                  "text-foreground": isCoinSaleOn,
+                  "text-foreground dark:text-white": isCoinSaleOn,
                 })}
               >
                 {remainingCoins.toLocaleString("ru")}
@@ -107,28 +112,28 @@ export const CoinSaleCard = () => {
                     <Skeleton key={i} className="h-16 rounded-xl" />
                   ))
                 : coinSales.map((sale) => {
-                    const isSelected = selectedCoinSaleId === sale.id;
+                    const isSelected = selectedCoinSaleId === sale?.id;
                     const isAffordable = canAfford(sale);
                     return (
                       <button
-                        key={sale.id}
+                        key={sale?.id}
                         type="button"
                         disabled={!isAffordable}
-                        onClick={() => dispatch(setSelectedCoinSaleId(sale.id))}
+                        onClick={() => dispatch(setSelectedCoinSaleId(sale?.id))}
                         className={classNames(
                           "rounded-xl px-3 py-2 transition-colors flex flex-col items-center justify-center",
                           {
                             "bg-brand text-white cursor-pointer":
                               isSelected && isAffordable,
-                            "border-[1.2px] border-[#E8E8E8] shadow-[0_1px_3px_#00000014] cursor-pointer":
+                            "border-[1.2px] border-[#E8E8E8] dark:border-[#27272A] bg-white dark:bg-black shadow-[0_1px_3px_#00000014] dark:shadow-none cursor-pointer":
                               !isSelected && isAffordable,
-                            "border-[1.2px] border-[#E8E8E8] bg-muted opacity-50 cursor-not-allowed":
+                            "border-[1.2px] border-[#E8E8E8] dark:border-[#27272A] bg-muted dark:bg-muted-dark opacity-50 cursor-not-allowed":
                               !isAffordable,
                           },
                         )}
                       >
                         <span className="font-semibold text-sm">
-                          {sale.discount_percentage}%
+                          {sale?.discount_percentage}%
                         </span>
                         <span
                           className={classNames("text-xs mt-0.5", {
@@ -137,7 +142,7 @@ export const CoinSaleCard = () => {
                               !isSelected || !isAffordable,
                           })}
                         >
-                          {sale.coin_amount} {t("bilig")}
+                          {Math.floor(Number(sale?.coin_amount))} {t("bilig")}
                         </span>
                       </button>
                     );

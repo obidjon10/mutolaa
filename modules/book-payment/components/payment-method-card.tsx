@@ -34,14 +34,14 @@ export const PaymentMethodCard = () => {
           <Tabs.List aria-label={t("tolov_usuli")}>
             <Tabs.Tab
               id="card"
-              className="text-sm font-medium text-foreground-muted! data-selected:text-foreground! transition-colors"
+              className="text-sm font-medium text-foreground-muted! data-selected:text-foreground! dark:data-selected:text-white! transition-colors"
             >
               {t("bank_kartasi")}
               <Tabs.Indicator />
             </Tabs.Tab>
             <Tabs.Tab
               id="provider"
-              className="text-sm font-medium text-foreground-muted! data-selected:text-foreground! transition-colors"
+              className="text-sm font-medium text-foreground-muted! data-selected:text-foreground! dark:data-selected:text-white! transition-colors"
             >
               {t("tolov_tizimi")}
               <Tabs.Indicator />

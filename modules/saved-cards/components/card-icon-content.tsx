@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { CreditCardIcon } from "@/modules/icons";
 
 interface IProps {
-  bg: "orange" | "white" | "gray" | "red";
+  bg: "orange" | "white" | "gray" | "red" | "grayBlack";
 }
 
 export const CardIconContent: React.FC<IProps> = ({ bg }) => (
@@ -15,6 +15,7 @@ export const CardIconContent: React.FC<IProps> = ({ bg }) => (
         "bg-brand text-white": bg === "orange",
         "bg-[#b61414] text-red-500": bg === "red",
         "bg-muted dark:bg-muted-dark": bg === "gray",
+        "bg-muted dark:bg-black": bg === "grayBlack",
       },
     )}
   >
