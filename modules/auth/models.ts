@@ -12,13 +12,14 @@ export interface ILoginRequest {
 
 export interface IUser {
   id: number;
-  full_name: string;
-  avatar: string;
   phone: string;
   email: string;
-  push_notifications: boolean;
-  is_premium: boolean;
+  avatar: string;
+  full_name: string;
   coin_amount: number;
+  is_premium: boolean;
+  push_notifications: boolean;
+  show_manage_subscription: boolean
 }
 
 export interface ICountry {

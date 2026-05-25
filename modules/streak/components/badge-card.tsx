@@ -63,7 +63,7 @@ export function BadgeCard({ badge }: IProps) {
           className={classNames(
             "absolute inset-0 flex items-center justify-center rounded-full m-2.5",
             {
-              "bg-muted dark:bg-muted-dark": !isComplete,
+              "bg-muted dark:bg-[#27272A]": !isComplete,
               "bg-[#F7FEE7]": isComplete,
             },
           )}

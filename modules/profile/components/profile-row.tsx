@@ -32,9 +32,10 @@ export const ProfileRow = ({
       }
     }}
     className={classNames(
-      "flex items-center gap-4 bg-muted dark:bg-muted-dark p-3",
+      "relative flex items-center gap-4 bg-muted dark:bg-muted-dark p-3",
       {
-        "border-b border-[#E4E4E7] dark:border-gray-800": !isLast,
+        "after:content-[''] after:absolute after:left-3 after:right-3 after:bottom-0 after:h-px after:bg-[#E4E4E7] dark:after:bg-gray-800":
+          !isLast,
         "cursor-pointer hover:bg-gray-200/60 dark:hover:bg-white/5 transition-colors":
           !!onClick,
       },

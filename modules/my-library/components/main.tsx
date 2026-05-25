@@ -42,7 +42,6 @@ export const Main: React.FC<IProps> = ({ initialIsAuthenticated }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <LastReadBookCard
             lastReadBook={headerData?.last_read_book}
-            showDetailsLink
           />
         </div>
       </ConditionalRender>

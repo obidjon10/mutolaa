@@ -35,7 +35,7 @@ export const MilestonesModal: React.FC<IProps> = ({ badges }) => {
               <XMarkIcon size={16} />
             </Modal.CloseTrigger>
             <Modal.Header>
-              <Modal.Heading className="text-xl font-semibold">
+              <Modal.Heading className="text-xl font-semibold text-foreground dark:text-white">
                 {t("osish_marralari")}
               </Modal.Heading>
             </Modal.Header>
@@ -49,7 +49,7 @@ export const MilestonesModal: React.FC<IProps> = ({ badges }) => {
                     ))}
                   </div>
                   <ConditionalRender if={index !== badges.length - 1}>
-                    <Separator className="mt-8 bg-muted" />
+                    <Separator className="mt-8 bg-muted dark:bg-black" />
                   </ConditionalRender>
                 </div>
               ))}

@@ -12,6 +12,7 @@ import { useAuth, useProfile } from "@/modules/auth";
 import { ConditionalRender, useConfirm } from "@/modules/common";
 import {
   BiligCoinIcon,
+  CalendarIcon,
   CircleQuestionIcon,
   CopyTransparentIcon,
   CreditCardIcon,
@@ -110,7 +111,9 @@ export const ProfilePage = () => {
             </button>
             <div className="mt-0.5 flex items-center gap-1 text-sm text-gray-900 dark:text-white">
               <BiligCoinIcon size={16} />
-              <span className="font-medium">{user?.coin_amount?.toLocaleString("ru") ?? 0}</span>
+              <span className="font-medium">
+                {user?.coin_amount?.toLocaleString("ru") ?? 0}
+              </span>
             </div>
           </div>
         </div>
@@ -134,12 +137,21 @@ export const ProfilePage = () => {
             onClick={() => push("/saved-cards")}
           />
           <ProfileRow
-            isLast
             hasArrow
+            isLast={!user?.show_manage_subscription}
             icon={<ReceiptIcon />}
             label={t("tolov_tarixi")}
             onClick={() => push("/transaction-history")}
           />
+          <ConditionalRender if={user?.show_manage_subscription}>
+            <ProfileRow
+              isLast
+              hasArrow
+              icon={<CalendarIcon />}
+              label={t("obuna_boshqaruvi")}
+              onClick={() => push("/manage-subscription")}
+            />
+          </ConditionalRender>
         </ProfileSection>
 
         <ProfileSection title={t("tizim")}>

@@ -52,7 +52,7 @@ export const CardListModal = ({
                       key={card.id}
                       type="button"
                       onClick={() => onSelect(card)}
-                      className="w-full flex items-center gap-2 p-2.5 rounded-2xl bg-muted dark:bg-muted-dark hover:bg-[#e4e4e7] dark:hover:bg-white/10 transition-colors"
+                      className="w-full flex cursor-pointer items-center gap-2 p-2.5 rounded-2xl bg-muted dark:bg-muted-dark hover:bg-[#e4e4e7] dark:hover:bg-white/10 transition-colors"
                     >
                       <CardIconContent bg="white" />
                       <div className="flex-1 text-left">

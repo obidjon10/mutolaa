@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { SnowflakeFrozenIcon } from "@/modules/icons";
 
 export const getLocalToday = (): string => {
   const d = new Date();
@@ -36,8 +36,16 @@ export function CalendarCell({ date, status, today }: IProps) {
 
   if (status === "frozen") {
     return (
-      <div className={`${CIRCLE_BASE} bg-[#0EA5E9] text-white`}>
-        <Image src="/freeze.webp" alt="Frozen" width={20} height={20} />
+      <div className="relative size-7.5 mt-1 flex items-center justify-center">
+        <SnowflakeFrozenIcon
+          width={36}
+          height={40}
+          aria-label="Frozen"
+          role="img"
+        />
+        <span className="absolute inset-x-0 top-[45%] -translate-y-1/2 text-center text-xs font-medium text-white pointer-events-none">
+          {dayNumber}
+        </span>
       </div>
     );
   }

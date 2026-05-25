@@ -1,10 +1,11 @@
 "use client";
 
 import { useCallback } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { removeTokenCookie, setTokenCookie, useAppDispatch, useAppSelector } from "@/lib";
 
-import { clearTokens, setTokens } from "../store";
+import { clearTokens, resetAuth, setTokens } from "../store";
 
 const ACCESS_TOKEN_KEY = "access_token";
 const REFRESH_TOKEN_KEY = "refresh_token";
@@ -16,6 +17,7 @@ interface ILoginTokens {
 
 export const useAuth = () => {
   const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
   const accessToken = useAppSelector((state) => state?.auth?.accessToken);
   const refreshToken = useAppSelector((state) => state?.auth?.refreshToken);
   const isHydrated = useAppSelector((state) => state?.auth?.isHydrated);
@@ -34,12 +36,14 @@ export const useAuth = () => {
 
   const logout = useCallback(() => {
     dispatch(clearTokens());
+    dispatch(resetAuth());
+    queryClient.clear();
     if (typeof window !== "undefined") {
       localStorage.removeItem(ACCESS_TOKEN_KEY);
       localStorage.removeItem(REFRESH_TOKEN_KEY);
       removeTokenCookie();
     }
-  }, [dispatch]);
+  }, [dispatch, queryClient]);
 
   return {
     accessToken,
