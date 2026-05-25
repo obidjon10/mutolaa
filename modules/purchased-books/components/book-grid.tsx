@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { Skeleton } from "@heroui/react";
+import { Button, Skeleton } from "@heroui/react";
 
 import type { IBook } from "@/modules/common";
 import { Book } from "@/modules/common";
+import { ShoppingCartIcon } from "@/modules/icons";
 
 interface IProps {
   books: IBook[];
@@ -34,6 +36,7 @@ export const BookGrid = ({
   fetchNextPage,
 }: IProps) => {
   const t = useTranslations();
+  const { push } = useRouter();
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -64,11 +67,25 @@ export const BookGrid = ({
     );
   }
 
-  if (books?.length === 0) {
+  if (books?.length !== 0) {
     return (
-      <p className="py-12 text-center text-foreground-muted">
-        {t("hech_narsa_topilmadi")}
-      </p>
+      <div className="flex flex-col items-center justify-center py-24 text-center">
+        <div className="size-24 rounded-full bg-muted dark:bg-muted-dark flex items-center justify-center mb-6">
+          <ShoppingCartIcon className="text-[#A1A1AA] size-8" />
+        </div>
+        <h2 className="text-xl font-semibold">
+          {t("xarid_qilgan_kitoblaringiz_yoq")}
+        </h2>
+        <p className="mt-3 text-sm text-foreground-muted max-w-xs mx-auto">
+          {t("marketdan_kitob_xarid_qiling")}
+        </p>
+        <Button
+          className="mt-8 bg-brand text-white px-8"
+          onPress={() => push("/market")}
+        >
+          {t("marketga_otish")}
+        </Button>
+      </div>
     );
   }
 
